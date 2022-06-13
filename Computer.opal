@@ -142,6 +142,8 @@ new class Computer {
                 this.programCounter.load();
 
                 this.__onInterrupt = True;
+            } elif UNKNOWN_INTERRUPT_ALERT {
+                IO.out("WARNING: Unrecognized interrupt received.\n");
             }
         }
 
