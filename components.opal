@@ -47,10 +47,12 @@ new class Register : BUS {
     }
 
     new method __checkZero() {
-        if this.data == [0 for _ in range(this.bits)] {
-            this.computer.flags.data[FlagIndices.ZERO] = 1;
-        } else {
-            this.computer.flags.data[FlagIndices.ZERO] = 0;
+        if this.saveFlags {
+            if this.data == [0 for _ in range(this.bits)] {
+                this.computer.flags.data[FlagIndices.ZERO] = 1;
+            } else {
+                this.computer.flags.data[FlagIndices.ZERO] = 0;
+            }
         }
     }
 
