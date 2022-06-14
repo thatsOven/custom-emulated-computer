@@ -256,5 +256,13 @@ this.__microcode = (
     this.__mov(this.regX, this.gpu.x),
 
     # GYY
-    this.__mov(this.regY, this.gpu.y)
+    this.__mov(this.regY, this.gpu.y),
+
+    # IG?
+    this.gpu.x.inc,
+    this.gpu.y.inc,
+
+    # DG?
+    this.gpu.x.dec,
+    this.gpu.y.dec
 );
