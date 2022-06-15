@@ -7,16 +7,18 @@ package pygame: import Surface, transform;
 
 new <Vector> RESOLUTION = Vector(256, 128);
 
-new int BITS             = 16,
-        RAM_ADDR_SIZE    = 16,
-        SCREEN_MODE_BITS = 2,
-        FLAGS_QTY        = 3,
-        INSTRUCTION_BITS = 8,
-        INTERRUPT_BITS   = 4,
-        GPU_MODE_BITS    = 1,
-        COLOR_BITS       = 5,
-        CHAR_BITS        = 7,
-        CHAR_COLOR_BITS  = 3;
+new int BITS               = 16,
+        RAM_ADDR_SIZE      = 16,
+        SCREEN_MODE_BITS   = 2,
+        FLAGS_QTY          = 3,
+        INSTRUCTION_BITS   = 8,
+        INTERRUPT_BITS     = 4,
+        GPU_MODE_BITS      = 1,
+        COLOR_BITS         = 5,
+        GPU_MODIFIER_BITS  = 1,
+        CHAR_BITS          = 7,
+        CHAR_COLOR_BITS    = 2,
+        CHAR_BG_COLOR_BITS = 1;
 
 new float DEFAULT_CLOCK_PULSE_DURATION = 0.01,
           SCREEN_SCALE                 = 4;
@@ -143,6 +145,7 @@ new class Computer {
 
                 this.__onInterrupt = True;
             } elif UNKNOWN_INTERRUPT_ALERT {
+                this.interruptRegister.reset();
                 IO.out("WARNING: Unrecognized interrupt received.\n");
             }
         }

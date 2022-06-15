@@ -332,39 +332,67 @@ new class GPU : Component {
 
             new dynamic blue  = tmp.data[:COLOR_BITS],
                         green = tmp.data[COLOR_BITS:(COLOR_BITS * 2)],
-                        red   = tmp.data[(COLOR_BITS * 2):];
+                        red   = tmp.data[(COLOR_BITS * 2):(COLOR_BITS * 3)],
+                        modif = tmp.data[(COLOR_BITS * 3):(COLOR_BITS * 3 + GPU_MODIFIER_BITS)];
 
-            new int maxN = 2 ** COLOR_BITS - 1;
+            new int maxN = 2 ** COLOR_BITS - 1, min_, max_;
+
+            if modif == [0] {
+                min_ = 0;
+                max_ = 127;
+            } else {
+                min_ = 128;
+                max_ = 255;
+            }
 
             tmp.data = blue;
-            blue = int(Utils.translate(tmp.toDec(), 0, maxN, 0, 255));
+            blue = int(Utils.translate(tmp.toDec(), 0, maxN, min_, max_));
 
             tmp.data = green;
-            green = int(Utils.translate(tmp.toDec(), 0, maxN, 0, 255));
+            green = int(Utils.translate(tmp.toDec(), 0, maxN, min_, max_));
 
             tmp.data = red;
-            red = int(Utils.translate(tmp.toDec(), 0, maxN, 0, 255));
+            red = int(Utils.translate(tmp.toDec(), 0, maxN, min_, max_));
 
             this.frameBuffer.set_at((this.x.toDec(), this.y.toDec()), (red, green, blue));
         } else {
             new <Register> tmp = Register(this.computer, BITS, False);
             tmp.load();
 
-            new dynamic ch    = tmp.data[:CHAR_BITS],
-                        blue  = tmp.data[CHAR_BITS:(CHAR_BITS + CHAR_COLOR_BITS)],
-                        green = tmp.data[(CHAR_BITS + CHAR_COLOR_BITS):(CHAR_BITS + CHAR_COLOR_BITS * 2)],
-                        red   = tmp.data[(CHAR_BITS + CHAR_COLOR_BITS * 2):];
+            new int prc0 = CHAR_BITS + CHAR_COLOR_BITS,
+                    prc1 = prc0 + CHAR_COLOR_BITS,
+                    prc2 = prc1 + CHAR_COLOR_BITS,
+                    prc3 = prc2 + CHAR_BG_COLOR_BITS,
+                    prc4 = prc3 + CHAR_BG_COLOR_BITS;
 
-            new int maxN = 2 ** CHAR_COLOR_BITS - 1;
+            new dynamic ch      = tmp.data[:CHAR_BITS],
+                        blue    = tmp.data[CHAR_BITS:prc0],
+                        green   = tmp.data[prc0:prc1],
+                        red     = tmp.data[prc1:prc2],
+                        bgblue  = tmp.data[prc2:prc3],
+                        bggreen = tmp.data[prc3:prc4],
+                        bgred   = tmp.data[prc4:prc4 + CHAR_BG_COLOR_BITS];
+
+            new int maxNCh = 2 ** CHAR_COLOR_BITS - 1,
+                    maxNBg = 2 ** CHAR_BG_COLOR_BITS - 1;
 
             tmp.data = blue;
-            blue = int(Utils.translate(tmp.toDec(), 0, maxN, 37, 255));
+            blue = int(Utils.translate(tmp.toDec(), 0, maxNCh, 0, 255));
 
             tmp.data = green;
-            green = int(Utils.translate(tmp.toDec(), 0, maxN, 37, 255));
+            green = int(Utils.translate(tmp.toDec(), 0, maxNCh, 0, 255));
 
             tmp.data = red;
-            red = int(Utils.translate(tmp.toDec(), 0, maxN, 37, 255));
+            red = int(Utils.translate(tmp.toDec(), 0, maxNCh, 0, 255));
+
+            tmp.data = bgblue;
+            bgblue = int(Utils.translate(tmp.toDec(), 0, maxNBg, 0, 255));
+
+            tmp.data = bggreen;
+            bggreen = int(Utils.translate(tmp.toDec(), 0, maxNBg, 0, 255));
+
+            tmp.data = bgred;
+            bgred = int(Utils.translate(tmp.toDec(), 0, maxNBg, 0, 255));
 
             tmp.data = ch;
             ch = tmp.toDec();
@@ -382,7 +410,7 @@ new class GPU : Component {
                     if ch[chY][chX] == 1 {
                         this.frameBuffer.set_at((x, y), (red, green, blue));
                     } else {
-                        this.frameBuffer.set_at((x, y), (0, 0, 0));
+                        this.frameBuffer.set_at((x, y), (bgred, bggreen, bgblue));
                     }
                 }
             } 
