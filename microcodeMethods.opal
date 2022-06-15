@@ -154,6 +154,8 @@ new method __condJump(idx, fn) {
     new function condJump() {
         if this.flags.data[idx] {
             fn();
+        } else {
+            this.programCounter.inc();
         }
     }
     
