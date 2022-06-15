@@ -15,7 +15,6 @@ new int BITS               = 16,
         INTERRUPT_BITS     = 4,
         GPU_MODE_BITS      = 1,
         COLOR_BITS         = 5,
-        GPU_MODIFIER_BITS  = 1,
         CHAR_BITS          = 7,
         CHAR_COLOR_BITS    = 2,
         CHAR_BG_COLOR_BITS = 1;

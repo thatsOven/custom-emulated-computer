@@ -332,27 +332,18 @@ new class GPU : Component {
 
             new dynamic blue  = tmp.data[:COLOR_BITS],
                         green = tmp.data[COLOR_BITS:(COLOR_BITS * 2)],
-                        red   = tmp.data[(COLOR_BITS * 2):(COLOR_BITS * 3)],
-                        modif = tmp.data[(COLOR_BITS * 3):(COLOR_BITS * 3 + GPU_MODIFIER_BITS)];
+                        red   = tmp.data[(COLOR_BITS * 2):(COLOR_BITS * 3)];
 
-            new int maxN = 2 ** COLOR_BITS - 1, min_, max_;
-
-            if modif == [0] {
-                min_ = 0;
-                max_ = 127;
-            } else {
-                min_ = 128;
-                max_ = 255;
-            }
+            new int maxN = 2 ** COLOR_BITS - 1;
 
             tmp.data = blue;
-            blue = int(Utils.translate(tmp.toDec(), 0, maxN, min_, max_));
+            blue = int(Utils.translate(tmp.toDec(), 0, maxN, 0, 255));
 
             tmp.data = green;
-            green = int(Utils.translate(tmp.toDec(), 0, maxN, min_, max_));
+            green = int(Utils.translate(tmp.toDec(), 0, maxN, 0, 255));
 
             tmp.data = red;
-            red = int(Utils.translate(tmp.toDec(), 0, maxN, min_, max_));
+            red = int(Utils.translate(tmp.toDec(), 0, maxN, 0, 255));
 
             this.frameBuffer.set_at((this.x.toDec(), this.y.toDec()), (red, green, blue));
         } else {
