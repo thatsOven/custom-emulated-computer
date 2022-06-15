@@ -327,22 +327,26 @@ new class GPU : Component {
 
     new method load() {
         if this.mode.data == [0] {
-            new <Register> tmp = Register(this.computer, COLOR_BITS * 3, False);
+            new <Register> tmp = Register(this.computer, BITS, False);
             tmp.load();
 
+            new int prc0 = COLOR_BITS * 2,
+                    prc1 = prc0 + COLOR_BITS;
+
             new dynamic blue  = tmp.data[:COLOR_BITS],
-                        green = tmp.data[COLOR_BITS:(COLOR_BITS * 2)],
-                        red   = tmp.data[(COLOR_BITS * 2):(COLOR_BITS * 3)];
+                        green = tmp.data[COLOR_BITS:prc0],
+                        red   = tmp.data[prc0:prc1],
+                        modif = tmp.data[prc1:];
 
-            new int maxN = 2 ** COLOR_BITS - 1;
+            new int maxN = 2 ** (COLOR_BITS + GPU_MODIFIER_BITS) - 1;
 
-            tmp.data = blue;
+            tmp.data = modif + blue;
             blue = int(Utils.translate(tmp.toDec(), 0, maxN, 0, 255));
 
-            tmp.data = green;
+            tmp.data = modif + green;
             green = int(Utils.translate(tmp.toDec(), 0, maxN, 0, 255));
 
-            tmp.data = red;
+            tmp.data = modif + red;
             red = int(Utils.translate(tmp.toDec(), 0, maxN, 0, 255));
 
             this.frameBuffer.set_at((this.x.toDec(), this.y.toDec()), (red, green, blue));
