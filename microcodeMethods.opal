@@ -258,3 +258,17 @@ new method __fs(toWrite) {
     
     return fs;
 }
+
+new method __addrStore(fromAddress, toWrite) {
+    new function addrStore() {
+        fromAddress.write();
+        this.mar.load();
+
+        $call clock
+
+        toWrite.write();
+        this.ram.load();
+    }
+
+    return addrStore;
+}

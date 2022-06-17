@@ -264,5 +264,20 @@ this.__microcode = (
 
     # DG?
     this.gpu.x.dec,
-    this.gpu.y.dec
+    this.gpu.y.dec,
+
+    # A??
+    # AX?
+    this.__addrStore(this.regX, this.regY),
+    this.__addrStore(this.regX, this.regZ),
+    this.__addrStore(this.regX, this.regA),
+    this.__addrStore(this.regX, this.regB),
+    this.__addrStore(this.regX, this.display),
+    
+    # AY?
+    this.__addrStore(this.regY, this.regX),
+    this.__addrStore(this.regY, this.regZ),
+    this.__addrStore(this.regY, this.regA),
+    this.__addrStore(this.regY, this.regB),
+    this.__addrStore(this.regY, this.display)
 );

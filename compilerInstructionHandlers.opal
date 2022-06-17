@@ -167,6 +167,16 @@ this.INSTRUCTION_HANDLERS = {
     "igy": this.__np(156),
     "dgx": this.__np(157),
     "dgy": this.__np(158),
-    
+    "axy": this.__np(159),
+    "axz": this.__np(160),
+    "axa": this.__np(161),
+    "axb": this.__np(162),
+    "axd": this.__np(163),
+    "ayx": this.__np(164),
+    "ayz": this.__np(165),
+    "aya": this.__np(166),
+    "ayb": this.__np(167),
+    "ayd": this.__np(168),
+
     "hlt": this.__np(255)
 };

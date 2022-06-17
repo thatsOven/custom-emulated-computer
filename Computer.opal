@@ -126,7 +126,7 @@ new class Computer {
             IO.out(
                 "WARNING: Unrecognized opcode (0x",
                 Compiler.bitArrayToHex(this.instructionRegister.instruction.data, ceil(INSTRUCTION_BITS / 4)),
-                ") at address 0x", Compiler.bitArrayToHex(tmp.data, ceil(RAM_ADDR_SIZE / 4)), "."
+                ") at address 0x", Compiler.bitArrayToHex(tmp.data, ceil(RAM_ADDR_SIZE / 4)), ".\n"
             );
 
             if HALT_ON_UNKNOWN {

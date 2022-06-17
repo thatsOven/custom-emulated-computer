@@ -216,14 +216,18 @@ new class Compiler {
                 unchecked:
                 plh, charPtr = this.getUntilNotWord(line, 5);
 
+                this.fetching = False;
                 this.oLine = this.getValue(line[charPtr:]);
+                this.fetching = True;
                 continue;
             } elif line.startswith(".fill") or line.startswith(".stack") {
                 new dynamic charPtr, plh;
                 unchecked:
                 plh, charPtr = this.getUntilNotWord(line, 5);
 
+                this.fetching = False;
                 this.oLine += this.getValue(line[charPtr:]);
+                this.fetching = True;
                 continue;
             } elif line.startswith(".string") {
                 this.oLine += len(eval(line[7:]));
