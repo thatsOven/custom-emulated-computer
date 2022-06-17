@@ -23,12 +23,12 @@ new int BITS               = 16,
 new float DEFAULT_CLOCK_PULSE_DURATION = 0.01,
           SCREEN_SCALE                 = 1;
 
-new bool HEX_DUMP                = False,
-         STACK_PROTECTION        = True,
-         NOP_ALERT               = True,
-         UNKNOWN_OPCODE_ALERT    = True,
-         HALT_ON_UNKNOWN         = True,
-         UNKNOWN_INTERRUPT_ALERT = True;
+new bool HEX_DUMP                  = False,
+         STACK_PROTECTION          = True,
+         NOP_ALERT                 = True,
+         UNKNOWN_OPCODE_ALERT      = True,
+         HALT_ON_UNKNOWN           = True,
+         UNHANDLED_INTERRUPT_ALERT = False;
 
 $include os.path.join("HOME_DIR", "Compiler.opal")
 $include os.path.join("HOME_DIR", "components.opal")
@@ -57,6 +57,8 @@ new class Computer {
         this.ram = RAM(this, 2 ** RAM_ADDR_SIZE);
 
         this.display = AlphaNumericDisplay(this);
+
+        IO.out("Initializing graphics...\n");
 
         this.gpu = GPU(this, RESOLUTION);
         this.screenSize = (RESOLUTION * SCREEN_SCALE).getIntCoords();
@@ -144,7 +146,7 @@ new class Computer {
                 this.programCounter.load();
 
                 this.__onInterrupt = True;
-            } elif UNKNOWN_INTERRUPT_ALERT {
+            } elif UNHANDLED_INTERRUPT_ALERT {
                 this.interruptRegister.reset();
                 IO.out("WARNING: Unrecognized interrupt received.\n");
             }
