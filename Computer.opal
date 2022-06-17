@@ -85,8 +85,12 @@ new class Computer {
         $include os.path.join("HOME_DIR", "CPUMicrocode.opal")
     }
 
+    new method generateInterrupt(code) {
+        this.interruptRegister.data = Compiler.fill(Compiler.decimalToBitarray(code), INTERRUPT_BITS);
+    }
+
     new method __keydown(event) {
-        this.interruptRegister.data = Compiler.fill(Compiler.decimalToBitarray(1), INTERRUPT_BITS);
+        this.generateInterrupt(1);
         this.ram.memory[this.keyBufferAddr].data = Compiler.fill(Compiler.decimalToBitarray(event.key));
     }
 
