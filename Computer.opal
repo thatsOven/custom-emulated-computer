@@ -152,7 +152,7 @@ new class Computer {
                 this.__onInterrupt = True;
             } elif UNHANDLED_INTERRUPT_ALERT {
                 this.interruptRegister.reset();
-                IO.out("WARNING: Unrecognized interrupt received.\n");
+                IO.out("WARNING: Unhandled interrupt received.\n");
             }
         }
 
