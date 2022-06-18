@@ -46,34 +46,36 @@ new class Register : BUS {
         super().load(this.computer.bus.data);
     }
 
-    new method __checkZero() {
+    new method __checkFlags() {
         if this.saveFlags {
             if this.data == [0 for _ in range(this.bits)] {
                 this.computer.flags.data[FlagIndices.ZERO] = 1;
             } else {
                 this.computer.flags.data[FlagIndices.ZERO] = 0;
             }
+
+            this.computer.flags.data[FlagIndices.ODD] = this.data[0];
         }
     }
 
     new method shiftR() {
         this.data = [0] + this.data[:-1];
-        this.__checkZero();
+        this.__checkFlags();
     }
 
     new method shiftL() {
         this.data = this.data[1:] + [0];
-        this.__checkZero();
+        this.__checkFlags();
     }
 
     new method rotateR() {
         this.data = [this.data[-1]] + this.data[:-1];
-        this.__checkZero();
+        this.__checkFlags();
     }
 
     new method rotateL() {
         this.data = this.data[1:] + [this.data[0]];
-        this.__checkZero();
+        this.__checkFlags();
     }
 
     new method invert() {
@@ -85,11 +87,7 @@ new class Register : BUS {
             }
         }
         
-        if this.saveFlags {
-            this.computer.flags.data[FlagIndices.ODD] = this.data[0];
-
-            this.__checkZero();
-        }
+        this.__checkFlags();
     }
 
     new method inc() {
@@ -108,9 +106,8 @@ new class Register : BUS {
 
         if this.saveFlags {
             this.computer.flags.data[FlagIndices.CARRY_OUT] = 1 if carry else 0;
-            this.computer.flags.data[FlagIndices.ODD] = this.data[0];
 
-            this.__checkZero();
+            this.__checkFlags();
         }
     }
 
@@ -132,10 +129,7 @@ new class Register : BUS {
             }
         }
 
-        if this.saveFlags {
-            this.__checkZero();
-            this.computer.flags.data[FlagIndices.ODD] = this.data[0];
-        }
+        this.__checkFlags();
     }
 
     new method toDec(signed = False) {
