@@ -4,6 +4,7 @@ package sys:    import argv;
 package math:   import ceil;
 package timeit: import default_timer;
 package pygame: import Surface, transform;
+import numpy;
 
 new <Vector> RESOLUTION = Vector(256, 256);
 
@@ -18,7 +19,10 @@ new int BITS               = 16,
         GPU_MODIFIER_BITS  = 1,
         CHAR_BITS          = 7,
         CHAR_COLOR_BITS    = 2,
-        CHAR_BG_COLOR_BITS = 1;
+        CHAR_BG_COLOR_BITS = 1,
+        SOUND_FREQ_BITS    = 13,
+        MAX_VOL_MULT       = 500,
+        MIN_FREQ           = 50;
 
 new float DEFAULT_CLOCK_PULSE_DURATION = 0.01,
           SCREEN_SCALE                 = 1;
@@ -66,6 +70,11 @@ new class Computer {
         this.graphics.drawLoop = this.__draw;
         this.graphics.event(KEYDOWN)(this.__keydown);
         this.graphics.event(QUIT)(this.__quit);
+
+        this.soundSample = numpy.arange(0, 20, 1 / this.graphics.frequencySample);
+        this.audioChs    = this.graphics.getAudioChs()[2];
+
+        this.soundChip = SoundChip(this);
 
         this.programCounter      = Register(this, RAM_ADDR_SIZE, False);
         this.instructionRegister = InstructionRegister(this);

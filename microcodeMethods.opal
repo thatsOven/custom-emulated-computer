@@ -272,3 +272,31 @@ new method __addrStore(fromAddress, toWrite) {
 
     return addrStore;
 }
+
+new method __snd() {
+    this.programCounter.write();
+    this.mar.load();
+
+    $call clock
+
+    this.ram.write();
+    this.soundChip.load();
+
+    $call clock
+
+    this.programCounter.inc();
+    this.soundChip.play();
+}
+
+new method __sn(from_) {
+    new function sn() {
+        from_.write();
+        this.soundChip.load();
+
+        $call clock
+
+        this.soundChip.play();
+    }
+
+    return sn;
+}

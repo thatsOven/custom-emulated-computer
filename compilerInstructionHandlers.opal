@@ -177,6 +177,12 @@ this.INSTRUCTION_HANDLERS = {
     "aya": this.__np(166),
     "ayb": this.__np(167),
     "ayd": this.__np(168),
+    "snd": this.__li(169),
+    "snx": this.__np(170),
+    "sny": this.__np(171),
+    "snz": this.__np(172),
+    "sna": this.__np(173),
+    "snb": this.__np(174),
 
     "hlt": this.__np(255)
 };

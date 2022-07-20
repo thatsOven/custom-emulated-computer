@@ -279,5 +279,15 @@ this.__microcode = (
     this.__addrStore(this.regY, this.regZ),
     this.__addrStore(this.regY, this.regA),
     this.__addrStore(this.regY, this.regB),
-    this.__addrStore(this.regY, this.display)
+    this.__addrStore(this.regY, this.display),
+
+    # SND <soundcode (amp + freq)>
+    this.__snd,
+
+    # SN?
+    this.__sn(this.regX),
+    this.__sn(this.regY),
+    this.__sn(this.regZ),
+    this.__sn(this.regA),
+    this.__sn(this.regB)
 );
