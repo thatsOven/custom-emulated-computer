@@ -2,6 +2,7 @@ package opal:   import *;
 package time:   import sleep;
 package sys:    import argv;
 package math:   import ceil;
+package scipy:  import signal;
 package timeit: import default_timer;
 package pygame: import Surface, transform;
 import numpy;
