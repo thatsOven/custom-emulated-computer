@@ -2,7 +2,6 @@ package opal:   import *;
 package time:   import sleep;
 package sys:    import argv;
 package math:   import ceil;
-package scipy:  import signal;
 package timeit: import default_timer;
 package pygame: import Surface, transform;
 import numpy;
@@ -33,7 +32,18 @@ new bool HEX_DUMP                  = False,
          NOP_ALERT                 = True,
          UNKNOWN_OPCODE_ALERT      = True,
          HALT_ON_UNKNOWN           = True,
-         UNHANDLED_INTERRUPT_ALERT = False;
+         UNHANDLED_INTERRUPT_ALERT = False,
+         PERFORMANCE_AUDIO         = False;
+
+new dynamic audio, audioMlt;
+if PERFORMANCE_AUDIO {
+    audio = numpy.sin;
+    audioMlt = 10;
+} else {
+    package scipy: import signal;
+    audio = signal.square;
+    audioMlt = 1;
+}
 
 $include os.path.join("HOME_DIR", "Compiler.opal")
 $include os.path.join("HOME_DIR", "components.opal")

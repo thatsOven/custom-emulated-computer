@@ -438,7 +438,7 @@ new class SoundChip : Component {
             return;
         }
 
-        tmp = amp * signal.square(2 * numpy.pi * (freq + MIN_FREQ) * this.computer.soundSample);
+        tmp = audioMlt * amp * audio(2 * numpy.pi * (freq + MIN_FREQ) * this.computer.soundSample);
 
         if this.computer.audioChs > 1 {
             this.computer.graphics.stopPlay([numpy.repeat(tmp.reshape(tmp.size, 1), this.computer.audioChs, axis = 1)]);
