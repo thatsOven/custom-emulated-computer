@@ -23,7 +23,7 @@ new int BITS               = 16,
         CHAR_BG_COLOR_BITS = 1,
         SOUND_FREQ_BITS    = 13,
         MAX_VOL_MULT       = 500,
-        MIN_FREQ           = 50;
+        MIN_FREQ           = 0;
 
 new float DEFAULT_CLOCK_PULSE_DURATION = 0.01,
           SCREEN_SCALE                 = 1;
