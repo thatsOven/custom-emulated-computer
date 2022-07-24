@@ -138,6 +138,12 @@ new class Computer {
         # 255 = HLT
         if instruction == 255 or this.stackError {
             this.__quit();
+        } elif instruction == 254 {
+            this.graphics.restore();
+            return;
+        } elif instruction == 253 {
+            this.graphics.loopOnly();
+            return;
         } elif instruction >= len(this.__microcode) and UNKNOWN_OPCODE_ALERT {
             new <Register> tmp = Register(None, RAM_ADDR_SIZE, False);
             tmp.data = this.programCounter.data.copy();
@@ -176,7 +182,9 @@ new class Computer {
             }
         }
 
-        transform.scale(this.gpu.frameBuffer, (this.screenSize.x, this.screenSize.y), this.graphics.screen);
+        if not this.graphics.stopped {
+            transform.scale(this.gpu.frameBuffer, (this.screenSize.x, this.screenSize.y), this.graphics.screen);
+        }
     }
 
     new method run() {
