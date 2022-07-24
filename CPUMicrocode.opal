@@ -289,5 +289,12 @@ this.__microcode = (
     this.__sn(this.regY),
     this.__sn(this.regZ),
     this.__sn(this.regA),
-    this.__sn(this.regB)
+    this.__sn(this.regB),
+
+    # WT?
+    this.__wt(this.regX),
+    this.__wt(this.regY),
+    this.__wt(this.regZ),
+    this.__wt(this.regA),
+    this.__wt(this.regB)
 );

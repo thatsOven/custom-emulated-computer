@@ -8,21 +8,23 @@ import numpy;
 
 new <Vector> RESOLUTION = Vector(256, 256);
 
-new int BITS               = 16,
-        RAM_ADDR_SIZE      = 16,
-        SCREEN_MODE_BITS   = 2,
-        FLAGS_QTY          = 3,
-        INSTRUCTION_BITS   = 8,
-        INTERRUPT_BITS     = 4,
-        GPU_MODE_BITS      = 2,
-        COLOR_BITS         = 5,
-        GPU_MODIFIER_BITS  = 1,
-        CHAR_BITS          = 7,
-        CHAR_COLOR_BITS    = 2,
-        CHAR_BG_COLOR_BITS = 1,
-        SOUND_FREQ_BITS    = 13,
-        MAX_VOL_MULT       = 500,
-        MIN_FREQ           = 0;
+new int BITS                = 16,
+        RAM_ADDR_SIZE       = 16,
+        SCREEN_MODE_BITS    = 2,
+        FLAGS_QTY           = 3,
+        INSTRUCTION_BITS    = 8,
+        INTERRUPT_BITS      = 4,
+        GPU_MODE_BITS       = 2,
+        COLOR_BITS          = 5,
+        GPU_MODIFIER_BITS   = 1,
+        CHAR_BITS           = 7,
+        CHAR_COLOR_BITS     = 2,
+        CHAR_BG_COLOR_BITS  = 1,
+        SOUND_FREQ_BITS     = 13,
+        MAX_VOL_MULT        = 500,
+        MIN_FREQ            = 0,
+        FREQUENCY_SAMPLE    = 30000,
+        DEFAULT_SAMPLE_TIME = 1;
 
 new float DEFAULT_CLOCK_PULSE_DURATION = 0.01,
           SCREEN_SCALE                 = 1;
@@ -81,12 +83,12 @@ new class Computer {
 
         this.gpu = GPU(this, RESOLUTION);
         this.screenSize = (RESOLUTION * SCREEN_SCALE).getIntCoords();
-        this.graphics = Graphics(this.screenSize, None, caption = "Emulated computer screen");
+        this.graphics = Graphics(this.screenSize, None, caption = "Emulated computer screen", frequencySample = FREQUENCY_SAMPLE);
         this.graphics.drawLoop = this.__draw;
         this.graphics.event(KEYDOWN)(this.__keydown);
         this.graphics.event(QUIT)(this.__quit);
 
-        this.soundSample = numpy.arange(0, 20, 1 / this.graphics.frequencySample);
+        this.soundSample = numpy.arange(0, DEFAULT_SAMPLE_TIME, 1 / this.graphics.frequencySample);
         this.audioChs    = this.graphics.getAudioChs()[2];
 
         this.soundChip = SoundChip(this);
@@ -107,6 +109,10 @@ new class Computer {
         this.keyBufferAddr = 2 ** RAM_ADDR_SIZE - 1;
 
         $include os.path.join("HOME_DIR", "CPUMicrocode.opal")
+    }
+
+    new method __setSample(dur) {
+        this.soundSample = numpy.arange(0, dur, 1 / this.graphics.frequencySample);
     }
 
     new method generateInterrupt(code) {
@@ -147,6 +153,9 @@ new class Computer {
             return;
         } elif instruction == 253 {
             this.graphics.loopOnly();
+            return;
+        } elif instruction == 252 {
+            this.__setSample(this.instructionRegister.low.toDec());
             return;
         } elif instruction >= len(this.__microcode) and UNKNOWN_OPCODE_ALERT {
             new <Register> tmp = Register(None, RAM_ADDR_SIZE, False);

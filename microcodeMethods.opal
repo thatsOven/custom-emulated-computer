@@ -300,3 +300,11 @@ new method __sn(from_) {
 
     return sn;
 }
+
+new method __wt(toWait) {
+    new function wt() {
+        sleep(toWait.toDec() / 1000);
+    }
+
+    return wt;
+}

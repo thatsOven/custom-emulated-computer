@@ -183,7 +183,13 @@ this.INSTRUCTION_HANDLERS = {
     "snz": this.__np(172),
     "sna": this.__np(173),
     "snb": this.__np(174),
+    "wtx": this.__np(175),
+    "wty": this.__np(176),
+    "wtz": this.__np(177),
+    "wta": this.__np(178),
+    "wtb": this.__np(179),
 
+    "sndtime":  this.__fl(252),
     "gfxstop":  this.__np(253),
     "gfxstart": this.__np(254),
 
