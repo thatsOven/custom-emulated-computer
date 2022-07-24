@@ -184,7 +184,7 @@ this.INSTRUCTION_HANDLERS = {
     "sna": this.__np(173),
     "snb": this.__np(174),
 
-    "gfxstop": this.__np(253),
+    "gfxstop":  this.__np(253),
     "gfxstart": this.__np(254),
 
     "hlt": this.__np(255)

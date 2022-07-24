@@ -3,7 +3,7 @@ package time:   import sleep;
 package sys:    import argv;
 package math:   import ceil;
 package timeit: import default_timer;
-package pygame: import Surface, transform;
+package pygame: import Surface, transform, draw;
 import numpy;
 
 new <Vector> RESOLUTION = Vector(256, 256);
@@ -14,7 +14,7 @@ new int BITS               = 16,
         FLAGS_QTY          = 3,
         INSTRUCTION_BITS   = 8,
         INTERRUPT_BITS     = 4,
-        GPU_MODE_BITS      = 1,
+        GPU_MODE_BITS      = 2,
         COLOR_BITS         = 5,
         GPU_MODIFIER_BITS  = 1,
         CHAR_BITS          = 7,
@@ -44,6 +44,10 @@ if PERFORMANCE_AUDIO {
     audio = signal.square;
     audioMlt = 1;
 }
+
+$macro clockExt
+    sleep(this.computer.clockSpeed);
+$end
 
 $include os.path.join("HOME_DIR", "Compiler.opal")
 $include os.path.join("HOME_DIR", "components.opal")
