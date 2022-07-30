@@ -3,7 +3,7 @@ package time:   import sleep;
 package sys:    import argv;
 package math:   import ceil;
 package timeit: import default_timer;
-package pygame: import Surface, transform, draw;
+package pygame: import Surface, transform, draw, mixer;
 import numpy;
 
 new <Vector> RESOLUTION = Vector(256, 256);
@@ -23,8 +23,7 @@ new int BITS                = 16,
         SOUND_FREQ_BITS     = 13,
         MAX_VOL_MULT        = 500,
         MIN_FREQ            = 0,
-        FREQUENCY_SAMPLE    = 30000,
-        DEFAULT_SAMPLE_TIME = 1;
+        FREQUENCY_SAMPLE    = 30000;
 
 new float DEFAULT_CLOCK_PULSE_DURATION = 0.01,
           SCREEN_SCALE                 = 1;
@@ -88,8 +87,7 @@ new class Computer {
         this.graphics.event(KEYDOWN)(this.__keydown);
         this.graphics.event(QUIT)(this.__quit);
 
-        this.soundSample = numpy.arange(0, DEFAULT_SAMPLE_TIME, 1 / this.graphics.frequencySample);
-        this.audioChs    = this.graphics.getAudioChs()[2];
+        this.audioChs = this.graphics.getAudioChs()[2];
 
         this.soundChip = SoundChip(this);
 
