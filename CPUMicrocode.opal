@@ -296,5 +296,15 @@ this.__microcode = (
     this.__wt(this.regY),
     this.__wt(this.regZ),
     this.__wt(this.regA),
-    this.__wt(this.regB)
+    this.__wt(this.regB),
+
+    # FLS
+    this.__fls,
+
+    # M?S
+    this.__movS(this.regX),
+    this.__movS(this.regY),
+    this.__movS(this.regZ),
+    this.__movS(this.regA),
+    this.__movS(this.regB)
 );

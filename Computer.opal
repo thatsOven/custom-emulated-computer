@@ -9,7 +9,7 @@ import numpy;
 new <Vector> RESOLUTION = Vector(256, 256);
 
 new int BITS                = 16,
-        RAM_ADDR_SIZE       = 16,
+        RAM_ADDR_SIZE       = 20,
         SCREEN_MODE_BITS    = 2,
         FLAGS_QTY           = 3,
         INSTRUCTION_BITS    = 8,
@@ -72,7 +72,7 @@ new class Computer {
         this.flags = Register(this, FLAGS_QTY, False);
         this.alu = ALU(this);
 
-        this.mar = Register(this, RAM_ADDR_SIZE, False);
+        this.mar = MemoryAddressRegister(this);
         this.sp  = StackPointer(this, RAM_ADDR_SIZE);
         this.ram = RAM(this, 2 ** RAM_ADDR_SIZE);
 
@@ -151,9 +151,6 @@ new class Computer {
             return;
         } elif instruction == 253 {
             this.graphics.loopOnly();
-            return;
-        } elif instruction == 252 {
-            this.__setSample(this.instructionRegister.low.toDec());
             return;
         } elif instruction >= len(this.__microcode) and UNKNOWN_OPCODE_ALERT {
             new <Register> tmp = Register(None, RAM_ADDR_SIZE, False);

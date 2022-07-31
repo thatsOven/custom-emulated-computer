@@ -308,3 +308,17 @@ new method __wt(toWait) {
 
     return wt;
 }
+
+new method __fls() {
+    this.instructionRegister.write();
+    this.mar.loadMBSR();
+}
+
+new method __movS(toWrite) {
+    new function mov() {
+        toWrite.write();
+        this.mar.loadMBSR();
+    }
+
+    return mov;
+}

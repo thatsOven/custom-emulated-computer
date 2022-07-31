@@ -255,6 +255,19 @@ new class AlphaNumericDisplay : Register {
     }
 }
 
+new class MemoryAddressRegister : Register {
+    new method __init__(computer) {
+        super().__init__(computer, RAM_ADDR_SIZE, False);
+    }
+
+    new method loadMBSR() {
+        new <Register> tmp = Register(computer, RAM_ADDR_SIZE - BITS, False);
+        tmp.load();
+
+        this.data = this.data[:BITS] + tmp.data;
+    }
+}
+
 new class InstructionRegister : Component {
     new method __init__(computer) {
         super().__init__(computer);

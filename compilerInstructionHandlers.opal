@@ -188,8 +188,13 @@ this.INSTRUCTION_HANDLERS = {
     "wtz": this.__np(177),
     "wta": this.__np(178),
     "wtb": this.__np(179),
+    "fls": this.__fl(180),
+    "mxs": this.__np(181),
+    "mys": this.__np(182),
+    "mzs": this.__np(183),
+    "mas": this.__np(184),
+    "mbs": this.__np(185),
 
-    "sndtime":  this.__fl(252),
     "gfxstop":  this.__np(253),
     "gfxstart": this.__np(254),
 
