@@ -3,7 +3,7 @@ package time:   import sleep;
 package sys:    import argv;
 package math:   import ceil;
 package timeit: import default_timer;
-package pygame: import Surface, transform, draw, mixer;
+package pygame: import Surface, transform, draw;
 import numpy;
 
 new <Vector> RESOLUTION = Vector(256, 256);
