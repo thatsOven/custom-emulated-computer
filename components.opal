@@ -543,7 +543,7 @@ new class SoundChip : Component {
         }
 
         sample = numpy.arange(0, this.duration.toDec() / 1000, 1 / this.computer.graphics.frequencySample);
-        tmp = audioMlt * amp * audio(2 * numpy.pi * (freq + MIN_FREQ) * sample);
+        tmp = audioMlt * amp * audio(2 * numpy.pi * freq * sample);
 
         if this.computer.audioChs > 1 {
             this.computer.graphics.playWaveforms([numpy.repeat(tmp.reshape(tmp.size, 1), this.computer.audioChs, axis = 1)]);

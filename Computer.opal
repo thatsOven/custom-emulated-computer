@@ -22,7 +22,6 @@ new int BITS                = 16,
         CHAR_BG_COLOR_BITS  = 1,
         SOUND_FREQ_BITS     = 13,
         MAX_VOL_MULT        = 500,
-        MIN_FREQ            = 0,
         FREQUENCY_SAMPLE    = 30000;
 
 new float DEFAULT_CLOCK_PULSE_DURATION = 0.01,
