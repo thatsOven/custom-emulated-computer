@@ -258,6 +258,23 @@ new class AlphaNumericDisplay : Register {
 new class MemoryAddressRegister : Register {
     new method __init__(computer) {
         super().__init__(computer, RAM_ADDR_SIZE, False);
+        this.writable = min(BITS, RAM_ADDR_SIZE);
+    }
+
+    new method load() {
+        if len(this.computer.bus.data) < this.writable {
+            for i = 0; i < len(this.computer.bus.data); i++ {
+                this.data[i] = this.computer.bus.data[i];
+            }
+
+            for ; i < this.writable; i++ {
+                this.data[i] = 0;
+            }
+        } else {
+            for i = 0; i < len(this.computer.bus.data); i++ {
+                this.data[i] = this.computer.bus.data[i];
+            }
+        }
     }
 
     new method loadMBSR() {
