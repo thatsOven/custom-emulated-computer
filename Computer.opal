@@ -137,6 +137,8 @@ new class Computer {
             this.__quit();
         } elif instruction == 254 {
             this.graphics.restore();
+            transform.scale(this.gpu.frameBuffer, (this.screenSize.x, this.screenSize.y), this.graphics.screen);
+            this.graphics.rawUpdate();
             return;
         } elif instruction == 253 {
             this.graphics.loopOnly();
