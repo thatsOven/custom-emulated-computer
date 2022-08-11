@@ -490,6 +490,11 @@ new class GPU : Component {
                 draw.line(this.frameBuffer, c, (this.x.toDec(), this.y.toDec()), (dstX, dstY));
             }
         }
+
+        if not this.computer.graphics.stopped {
+            transform.scale(this.frameBuffer, (this.computer.screenSize.x, this.computer.screenSize.y), this.computer.graphics.screen);
+            this.computer.graphics.rawUpdate();
+        }
     }
 }
 
@@ -543,7 +548,7 @@ new class SoundChip : Component {
         }
 
         sample = numpy.arange(0, this.duration.toDec() / 1000, 1 / this.computer.graphics.frequencySample);
-        tmp = audioMlt * amp * audio(2 * numpy.pi * freq * sample);
+        tmp = amp * signal.square(2 * numpy.pi * freq * sample);
 
         if this.computer.audioChs > 1 {
             this.computer.graphics.playWaveforms([numpy.repeat(tmp.reshape(tmp.size, 1), this.computer.audioChs, axis = 1)]);

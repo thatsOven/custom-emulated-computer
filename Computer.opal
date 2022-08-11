@@ -2,6 +2,7 @@ package opal:   import *;
 package time:   import sleep;
 package sys:    import argv;
 package math:   import ceil;
+package scipy:  import signal;
 package timeit: import default_timer;
 package pygame: import Surface, transform, draw;
 import numpy;
@@ -32,18 +33,7 @@ new bool HEX_DUMP                  = False,
          NOP_ALERT                 = True,
          UNKNOWN_OPCODE_ALERT      = True,
          HALT_ON_UNKNOWN           = True,
-         UNHANDLED_INTERRUPT_ALERT = False,
-         PERFORMANCE_AUDIO         = False;
-
-new dynamic audio, audioMlt;
-if PERFORMANCE_AUDIO {
-    audio = numpy.sin;
-    audioMlt = 10;
-} else {
-    package scipy: import signal;
-    audio = signal.square;
-    audioMlt = 1;
-}
+         UNHANDLED_INTERRUPT_ALERT = False;
 
 $macro clockExt
     sleep(this.computer.clockSpeed);
@@ -188,14 +178,10 @@ new class Computer {
                 IO.out("WARNING: Unhandled interrupt received.\n");
             }
         }
-
-        if not this.graphics.stopped {
-            transform.scale(this.gpu.frameBuffer, (this.screenSize.x, this.screenSize.y), this.graphics.screen);
-        }
     }
 
     new method run() {
-        this.graphics.run(handleQuit = False);
+        this.graphics.run(handleQuit = False, drawBackground = False, autoUpdate = False);
     }
 }
 
