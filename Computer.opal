@@ -39,15 +39,16 @@ $macro clockExt
     sleep(this.computer.clockSpeed);
 $end
 
-$include os.path.join("HOME_DIR", "Compiler.opal")
-$include os.path.join("HOME_DIR", "components.opal")
+$include os.path.join("HOME_DIR", "compiler", "Compiler.opal")
+$include os.path.join("HOME_DIR", "baseComponents", "baseComponents.opal")
+$includeDirectory os.path.join("HOME_DIR", "components")
 
 new class Computer {
     $macro clock
         sleep(this.clockSpeed);
     $end
     
-    $include os.path.join("HOME_DIR", "microcodeMethods.opal")
+    $include os.path.join("HOME_DIR", "microcode", "microcodeMethods.opal")
 
     new method __init__() {
         this.bus = BUS(BITS);
@@ -95,7 +96,7 @@ new class Computer {
         this.clockSpeed    = DEFAULT_CLOCK_PULSE_DURATION;
         this.keyBufferAddr = 2 ** RAM_ADDR_SIZE - 1;
 
-        $include os.path.join("HOME_DIR", "CPUMicrocode.opal")
+        $include os.path.join("HOME_DIR", "microcode", "CPUMicrocode.opal")
     }
 
     new method __setSample(dur) {
