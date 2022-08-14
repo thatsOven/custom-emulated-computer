@@ -9,21 +9,25 @@ import numpy;
 
 new <Vector> RESOLUTION = Vector(256, 256);
 
-new int BITS                = 16,
-        RAM_ADDR_SIZE       = 20,
-        SCREEN_MODE_BITS    = 2,
-        FLAGS_QTY           = 3,
-        INSTRUCTION_BITS    = 8,
-        INTERRUPT_BITS      = 4,
-        GPU_MODE_BITS       = 2,
-        COLOR_BITS          = 5,
-        GPU_MODIFIER_BITS   = 1,
-        CHAR_BITS           = 7,
-        CHAR_COLOR_BITS     = 2,
-        CHAR_BG_COLOR_BITS  = 1,
-        SOUND_FREQ_BITS     = 13,
-        MAX_VOL_MULT        = 500,
-        FREQUENCY_SAMPLE    = 30000;
+new int BITS                  = 16,
+        RAM_ADDR_SIZE         = 20,
+        SCREEN_MODE_BITS      = 2,
+        FLAGS_QTY             = 3,
+        INSTRUCTION_BITS      = 8,
+        INTERRUPT_BITS        = 4,
+        GPU_MODE_BITS         = 2,
+        COLOR_BITS            = 5,
+        GPU_MODIFIER_BITS     = 1,
+        CHAR_BITS             = 7,
+        CHAR_COLOR_BITS       = 2,
+        CHAR_BG_COLOR_BITS    = 1,
+        SOUND_FREQ_BITS       = 13,
+        MAX_VOL_MULT          = 500,
+        FREQUENCY_SAMPLE      = 30000,
+        SAWTOOTH_WIDTH_BITS   = 4,
+        SAWTOOTH_AMP_BITS     = 4,
+        SQUARE_PWM_WIDTH_BITS = 4,
+        SQUARE_AMP_BITS       = 4;
 
 new float DEFAULT_CLOCK_PULSE_DURATION = 0.01,
           SCREEN_SCALE                 = 1;
@@ -33,7 +37,8 @@ new bool HEX_DUMP                  = False,
          NOP_ALERT                 = True,
          UNKNOWN_OPCODE_ALERT      = True,
          HALT_ON_UNKNOWN           = True,
-         UNHANDLED_INTERRUPT_ALERT = False;
+         UNHANDLED_INTERRUPT_ALERT = False,
+         SIMPLE_AUDIO              = False;
 
 $macro clockExt
     sleep(this.computer.clockSpeed);
@@ -207,6 +212,11 @@ new function prettyPrintFreq(n) {
 main {
     new <Computer> computer = Computer();
     new <Compiler> compiler = Compiler();
+
+    if "--simple-audio" in argv {
+        argv.remove("--simple-audio");
+        SIMPLE_AUDIO = True;
+    }
 
     new dynamic txt;
     with open(argv[1], "r") as txt {
