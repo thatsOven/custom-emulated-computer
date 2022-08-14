@@ -30,7 +30,8 @@ new int BITS                  = 16,
         SQUARE_AMP_BITS       = 4;
 
 new float DEFAULT_CLOCK_PULSE_DURATION = 0.01,
-          SCREEN_SCALE                 = 1;
+          SCREEN_SCALE                 = 1,
+          SAWTOOTH_MULT                = 2.5;
 
 new bool HEX_DUMP                  = False,
          STACK_PROTECTION          = True,

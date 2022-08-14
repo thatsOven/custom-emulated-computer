@@ -80,10 +80,10 @@ new class SoundChip : Component {
 
         if squarePWM.toDec() == 0 {
             return ((  squareAmp.toDec() /   SoundChip.MAX_SQUARE_AMP) * signal.square(baseArray)) +
-                   ((sawtoothAmp.toDec() / SoundChip.MAX_SAWTOOTH_AMP) * signal.sawtooth(baseArray, sawtoothWidth.toDec() / SoundChip.SAWTOOTH_WIDTH_DEN)); 
+                   ((sawtoothAmp.toDec() / SoundChip.MAX_SAWTOOTH_AMP) * SAWTOOTH_MULT * signal.sawtooth(baseArray, sawtoothWidth.toDec() / SoundChip.SAWTOOTH_WIDTH_DEN)); 
         } else {
             return ((  squareAmp.toDec() /   SoundChip.MAX_SQUARE_AMP) * signal.square(baseArray, signal.sawtooth(baseArray, squarePWM.toDec() / SoundChip.SQUARE_PWM_DEN))) +
-                   ((sawtoothAmp.toDec() / SoundChip.MAX_SAWTOOTH_AMP) * signal.sawtooth(baseArray, sawtoothWidth.toDec() / SoundChip.SAWTOOTH_WIDTH_DEN)); 
+                   ((sawtoothAmp.toDec() / SoundChip.MAX_SAWTOOTH_AMP) * SAWTOOTH_MULT * signal.sawtooth(baseArray, sawtoothWidth.toDec() / SoundChip.SAWTOOTH_WIDTH_DEN)); 
         }
     }
 
