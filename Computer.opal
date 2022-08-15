@@ -4,7 +4,7 @@ package sys:    import argv;
 package math:   import ceil;
 package scipy:  import signal;
 package timeit: import default_timer;
-package pygame: import Surface, transform, draw;
+package pygame: import Surface, transform, draw, mixer;
 import numpy;
 
 new <Vector> RESOLUTION = Vector(256, 256);
@@ -27,7 +27,8 @@ new int BITS                  = 16,
         SAWTOOTH_WIDTH_BITS   = 4,
         SAWTOOTH_AMP_BITS     = 4,
         SQUARE_PWM_WIDTH_BITS = 4,
-        SQUARE_AMP_BITS       = 4;
+        SQUARE_AMP_BITS       = 4,
+        SOUND_CHANNELS        = 256;
 
 new float DEFAULT_CLOCK_PULSE_DURATION = 0.01,
           SCREEN_SCALE                 = 1,
@@ -252,6 +253,8 @@ main {
     }
 
     IO.out("Key buffer is located at address 0x", hex(computer.keyBufferAddr)[2:].zfill(ceil(RAM_ADDR_SIZE / 4)), ".\n\n");
+
+    mixer.set_num_channels(SOUND_CHANNELS);
 
     computer.run();
 }
