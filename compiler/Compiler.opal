@@ -323,6 +323,8 @@ new class Compiler {
                 continue;
             } elif line.startswith(".interrupt") {
                 this.interruptHandlers[this.getValue(line[11:])] = this.decimalToBitarray(this.oLine);
+
+                this.iLine++;
                 continue;
             }
 

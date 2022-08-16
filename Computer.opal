@@ -106,10 +106,6 @@ new class Computer {
         $include os.path.join("HOME_DIR", "microcode", "CPUMicrocode.opal")
     }
 
-    new method __setSample(dur) {
-        this.soundSample = numpy.arange(0, dur, 1 / this.graphics.frequencySample);
-    }
-
     new method generateInterrupt(code) {
         this.interruptRegister.data = Compiler.fill(Compiler.decimalToBitarray(code), INTERRUPT_BITS);
     }
