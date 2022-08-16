@@ -151,6 +151,9 @@ new class Compiler {
         this.stackPos  = 0;
         this.stackSize = 0;
 
+        this.waitAddress = None;
+        this.waitEnd     = None;
+
         this.variables = {};
         this.interruptHandlers = {};
 
@@ -233,7 +236,7 @@ new class Compiler {
                 this.oLine += len(eval(line[7:]));
 
                 continue
-            } elif line.startswith(".interrupt") {
+            } elif line.startswith(".interrupt") or line.startswith(".waiting") or line.startswith(".endwaiting") {
                 continue;
             } elif line.startswith(".clock") {
                 this.clockSpeed = float(line[7:]);
@@ -326,6 +329,21 @@ new class Compiler {
 
                 this.iLine++;
                 continue;
+            } elif line.startswith(".waiting") {
+                this.waitAddress = this.oLine;
+
+                this.result += [this.fill(this.decimalToBitarray(this.oLine + 8))];
+                this.result += [this.fill([]) for _ in range(7)];
+
+                this.oLine += 8;
+                
+                this.iLine++;
+                continue;
+            } elif line.startswith(".endwaiting") {
+                this.waitEnd = this.oLine;
+
+                this.iLine++;
+                continue;
             }
 
             new dynamic instruction, charPtr;
@@ -350,6 +368,10 @@ new class Compiler {
             }
 
             this.iLine++;
+        }
+
+        if this.waitAddress is not None and this.waitEnd is None {
+            this.__error('"waiting" code has no "endwaiting" instruction');
         }
         
         if this.hadError {

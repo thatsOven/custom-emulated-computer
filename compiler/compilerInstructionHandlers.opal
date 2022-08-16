@@ -194,9 +194,6 @@ this.INSTRUCTION_HANDLERS = {
     "mzs": this.__np(183),
     "mas": this.__np(184),
     "mbs": this.__np(185),
-
-    "gfxstop":  this.__np(253),
-    "gfxstart": this.__np(254),
-
+    
     "hlt": this.__np(255)
 };

@@ -40,7 +40,8 @@ new bool HEX_DUMP                  = False,
          UNKNOWN_OPCODE_ALERT      = True,
          HALT_ON_UNKNOWN           = True,
          UNHANDLED_INTERRUPT_ALERT = False,
-         SIMPLE_AUDIO              = False;
+         SIMPLE_AUDIO              = False,
+         ALWAYS_NOP_WAIT           = False;
 
 $macro clockExt
     sleep(this.computer.clockSpeed);
@@ -100,6 +101,10 @@ new class Computer {
         this.stackTop   = 0;
         this.stackError = False;
 
+        this.waiting     = False;
+        this.waitAddress = None;
+        this.waitEnd     = None;
+
         this.clockSpeed    = DEFAULT_CLOCK_PULSE_DURATION;
         this.keyBufferAddr = 2 ** RAM_ADDR_SIZE - 1;
 
@@ -120,36 +125,29 @@ new class Computer {
         quit;
     }
 
-    new method __draw() {
-        # fetch
-        this.programCounter.write();
-        this.mar.load();
+    new method __memSwap(bufPos, fromReg, toAddr) {
+        this.ram.memory[bufPos].data = fromReg.data.copy();
+        fromReg.data = this.ram.memory[toAddr].data.copy();
+        this.ram.memory[toAddr].data = this.ram.memory[bufPos].data.copy();
+    }
 
-        $call clock
+    new method getProgramCounter() {
+        if this.waiting {
+            return this.ram.memory[this.waitAddress];
+        } else {
+            return this.programCounter;
+        }
+    }
 
-        # save instruction
-        this.ram.write();
-        this.instructionRegister.load();
-
-        # increment program counter
-        this.programCounter.inc();
-
+    new method __handleInstruction(pcData) {
         new int instruction = this.instructionRegister.instruction.toDec();
 
         # 255 = HLT
         if instruction == 255 or this.stackError {
             this.__quit();
-        } elif instruction == 254 {
-            this.graphics.restore();
-            transform.scale(this.gpu.frameBuffer, (this.screenSize.x, this.screenSize.y), this.graphics.screen);
-            this.graphics.rawUpdate();
-            return;
-        } elif instruction == 253 {
-            this.graphics.loopOnly();
-            return;
         } elif instruction >= len(this.__microcode) and UNKNOWN_OPCODE_ALERT {
             new <Register> tmp = Register(None, RAM_ADDR_SIZE, False);
-            tmp.data = this.programCounter.data.copy();
+            tmp.data = pcData.data.copy();
             tmp.dec();
 
             IO.out(
@@ -173,10 +171,10 @@ new class Computer {
         if this.interruptRegister.data != [0 for _ in range(INTERRUPT_BITS)] and not this.__onInterrupt {
             new int interrupt = this.interruptRegister.toDec();
             if interrupt in this.interruptHandlers {
-                this.__ps(this.programCounter)();
+                this.__ps(pcData)();
 
                 this.bus.load(this.interruptHandlers[interrupt]);
-                this.programCounter.load();
+                pcData.load();
 
                 this.__onInterrupt = True;
             } elif UNHANDLED_INTERRUPT_ALERT {
@@ -184,6 +182,23 @@ new class Computer {
                 IO.out("WARNING: Unhandled interrupt received.\n");
             }
         }
+    }
+
+    new method __draw() {
+        # fetch
+        this.programCounter.write();
+        this.mar.load();
+
+        $call clock
+
+        # save instruction
+        this.ram.write();
+        this.instructionRegister.load();
+
+        # increment program counter
+        this.programCounter.inc();
+
+        this.__handleInstruction(this.programCounter);
     }
 
     new method run() {
@@ -226,6 +241,10 @@ main {
     computer.interruptHandlers = compiler.interruptHandlers;
     computer.clockSpeed        = compiler.clockSpeed;
     computer.keyBufferAddr     = compiler.keyBufferAddr;
+    computer.waitAddress       = compiler.waitAddress;
+    computer.waitEnd           = compiler.waitEnd;
+
+    IO.out(computer.waitEnd);
 
     IO.out("Timing clock...\n");
     new dynamic sTime = default_timer();

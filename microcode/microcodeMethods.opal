@@ -1,7 +1,7 @@
 new method __nop() {
     if NOP_ALERT {
         new <Register> tmp = Register(None, RAM_ADDR_SIZE, False);
-        tmp.data = this.programCounter.data.copy();
+        tmp.data = this.getProgramCounter().data.copy();
         tmp.dec();
 
         IO.out("WARNING: CPU executed NOP (address 0x", Compiler.bitArrayToHex(tmp.data, ceil(RAM_ADDR_SIZE / 4)), ").\n");
@@ -10,7 +10,7 @@ new method __nop() {
 
 new method __li(toFill) {
     new function li() {
-        this.programCounter.write();
+        this.getProgramCounter().write();
         this.mar.load();
 
         $call clock
@@ -18,7 +18,7 @@ new method __li(toFill) {
         this.ram.write();
         toFill.load();
 
-        this.programCounter.inc();
+        this.getProgramCounter().inc();
     }
     
     return li;
@@ -35,7 +35,7 @@ new method __fl(toFill) {
 
 new method __lo(toFill) {
     new function lo() {
-        this.programCounter.write();
+        this.getProgramCounter().write();
         this.mar.load();
 
         $call clock
@@ -48,7 +48,7 @@ new method __lo(toFill) {
         this.ram.write();
         toFill.load();
 
-        this.programCounter.inc();
+        this.getProgramCounter().inc();
     }
 
     return lo;
@@ -56,7 +56,7 @@ new method __lo(toFill) {
 
 new method __st(toStore) {
     new function st() {
-        this.programCounter.write();
+        this.getProgramCounter().write();
         this.mar.load();
 
         $call clock
@@ -69,7 +69,7 @@ new method __st(toStore) {
         toStore.write();
         this.ram.load();
 
-        this.programCounter.inc();
+        this.getProgramCounter().inc();
     }
 
     return st;
@@ -86,7 +86,7 @@ new method __sub() {
 }
 
 new method __adsbi() {
-    this.programCounter.write();
+    this.getProgramCounter().write();
     this.mar.load();
 
     $call clock
@@ -94,11 +94,11 @@ new method __adsbi() {
     this.ram.write();
     this.regA.load();
 
-    this.programCounter.inc();
+    this.getProgramCounter().inc();
 
     $call clock
 
-    this.programCounter.write();
+    this.getProgramCounter().write();
     this.mar.load();
 
     $call clock
@@ -106,7 +106,7 @@ new method __adsbi() {
     this.ram.write();
     this.regB.load();
 
-    this.programCounter.inc();
+    this.getProgramCounter().inc();
 
     $call clock
 }
@@ -136,18 +136,18 @@ new method __fdl() {
 }
 
 new method __jmp() {
-    this.programCounter.write();
+    this.getProgramCounter().write();
     this.mar.load();
 
     $call clock
 
     this.ram.write();
-    this.programCounter.load();
+    this.getProgramCounter().load();
 }
 
 new method __jmi() {
     this.instructionRegister.write();
-    this.programCounter.load();
+    this.getProgramCounter().load();
 }
 
 new method __condJump(idx, fn) {
@@ -155,7 +155,7 @@ new method __condJump(idx, fn) {
         if this.flags.data[idx] {
             fn();
         } elif fn == this.__jmp {
-            this.programCounter.inc();
+            this.getProgramCounter().inc();
         }
     }
     
@@ -234,17 +234,17 @@ new method __pp(toPop) {
 }
 
 new method __jsr() {
-    this.programCounter.inc();
-    this.__ps(this.programCounter)();
+    this.getProgramCounter().inc();
+    this.__ps(this.getProgramCounter())();
 
     $call clock
 
-    this.programCounter.dec();
+    this.getProgramCounter().dec();
     this.__jmp();
 }
 
 new method __rti() {
-    this.__pp(this.programCounter)();
+    this.__pp(this.getProgramCounter())();
 
     this.__onInterrupt = False;
     this.interruptRegister.reset();
@@ -274,7 +274,7 @@ new method __addrStore(fromAddress, toWrite) {
 }
 
 new method __snd() {
-    this.programCounter.write();
+    this.getProgramCounter().write();
     this.mar.load();
 
     $call clock
@@ -284,7 +284,7 @@ new method __snd() {
 
     $call clock
 
-    this.programCounter.inc();
+    this.getProgramCounter().inc();
     this.soundChip.play();
 }
 
@@ -303,7 +303,90 @@ new method __sn(from_) {
 
 new method __wt(toWait) {
     new function wt() {
-        sleep(toWait.toDec() / 1000);
+        new dynamic amt = toWait.toDec();
+
+        if amt == 0 {
+            return;
+        }
+
+        if this.waitAddress is None or this.waiting or ALWAYS_NOP_WAIT {
+            sleep(amt / 1000);
+        } else {
+            this.waiting = True;
+
+            new dynamic t    = amt / 1000,
+                        base = this.waitAddress;
+
+            new dynamic swTime = default_timer();
+            this.__memSwap(base + 7,    this.regA, base + 1);
+            this.__memSwap(base + 7,    this.regB, base + 2);
+            this.__memSwap(base + 7,    this.regX, base + 3);
+            this.__memSwap(base + 7,    this.regY, base + 4);
+            this.__memSwap(base + 7,    this.regZ, base + 5);
+            this.__memSwap(base + 7, this.display, base + 6);
+
+            t -= (default_timer() - swTime) * 2;
+            
+            while t > 0 {
+                new dynamic st = default_timer();
+
+                this.bus.load(Compiler.decimalToBitarray(this.waitAddress));
+                this.mar.load();
+
+                $call clock
+
+                this.ram.write();
+                this.regZ.load();
+
+                $call clock
+
+                this.regZ.write();
+                this.mar.load();
+
+                $call clock
+
+                this.ram.write();
+                this.instructionRegister.load();
+
+                $call clock
+
+                this.bus.load(Compiler.decimalToBitarray(this.waitAddress));
+                this.mar.load();
+
+                $call clock
+
+                this.ram.write();
+                this.regZ.load();
+
+                $call clock
+
+                this.regZ.inc();
+
+                $call clock
+
+                this.regZ.write();
+                this.ram.load();
+
+                this.__handleInstruction(this.ram.memory[base]);
+
+                t -= default_timer() - st;
+
+                if this.ram.memory[base].toDec() >= this.waitEnd {
+                    this.waitAddress = None;
+                    sleep(t);
+                    break;
+                }
+            }
+
+            this.__memSwap(base + 7,    this.regA, base + 1);
+            this.__memSwap(base + 7,    this.regB, base + 2);
+            this.__memSwap(base + 7,    this.regX, base + 3);
+            this.__memSwap(base + 7,    this.regY, base + 4);
+            this.__memSwap(base + 7,    this.regZ, base + 5);
+            this.__memSwap(base + 7, this.display, base + 6);
+
+            this.waiting = False;
+        }
     }
 
     return wt;
