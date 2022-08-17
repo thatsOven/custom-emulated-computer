@@ -139,15 +139,23 @@ new class Computer {
         }
     }
 
-    new method __handleInstruction(pcData) {
+    new method __handleInstruction() {
         new int instruction = this.instructionRegister.instruction.toDec();
 
         # 255 = HLT
         if instruction == 255 or this.stackError {
             this.__quit();
+        } elif instruction == 254 {
+            this.graphics.restore();
+            transform.scale(this.gpu.frameBuffer, (this.screenSize.x, this.screenSize.y), this.graphics.screen);
+            this.graphics.rawUpdate();
+            return;
+        } elif instruction == 253 {
+            this.graphics.loopOnly();
+            return;
         } elif instruction >= len(this.__microcode) and UNKNOWN_OPCODE_ALERT {
             new <Register> tmp = Register(None, RAM_ADDR_SIZE, False);
-            tmp.data = pcData.data.copy();
+            tmp.data = this.getProgramCounter().data.copy();
             tmp.dec();
 
             IO.out(
@@ -171,10 +179,10 @@ new class Computer {
         if this.interruptRegister.data != [0 for _ in range(INTERRUPT_BITS)] and not this.__onInterrupt {
             new int interrupt = this.interruptRegister.toDec();
             if interrupt in this.interruptHandlers {
-                this.__ps(pcData)();
+                this.__ps(this.getProgramCounter())();
 
                 this.bus.load(this.interruptHandlers[interrupt]);
-                pcData.load();
+                this.getProgramCounter().load();
 
                 this.__onInterrupt = True;
             } elif UNHANDLED_INTERRUPT_ALERT {
@@ -198,7 +206,7 @@ new class Computer {
         # increment program counter
         this.programCounter.inc();
 
-        this.__handleInstruction(this.programCounter);
+        this.__handleInstruction();
     }
 
     new method run() {
@@ -243,8 +251,6 @@ main {
     computer.keyBufferAddr     = compiler.keyBufferAddr;
     computer.waitAddress       = compiler.waitAddress;
     computer.waitEnd           = compiler.waitEnd;
-
-    IO.out(computer.waitEnd);
 
     IO.out("Timing clock...\n");
     new dynamic sTime = default_timer();

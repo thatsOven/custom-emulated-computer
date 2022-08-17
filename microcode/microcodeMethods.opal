@@ -367,7 +367,7 @@ new method __wt(toWait) {
                 this.regZ.write();
                 this.ram.load();
 
-                this.__handleInstruction(this.ram.memory[base]);
+                this.__handleInstruction();
 
                 t -= default_timer() - st;
 
