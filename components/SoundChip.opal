@@ -17,12 +17,12 @@ new class SoundChip : Component {
         new <Register> tmp = Register(this.computer, BITS, False);
         tmp.load();
 
-        $call clockExt
+        $call clock
 
         tmp.write();
         this.computer.mar.load();
 
-        $call clockExt
+        $call clock
 
         this.computer.ram.write();
 
@@ -35,22 +35,22 @@ new class SoundChip : Component {
             this.amplitude.data[j] = this.computer.bus.data[i];
         }
 
-        $call clockExt
+        $call clock
 
         this.computer.mar.inc();
 
-        $call clockExt
+        $call clock
         
         if not SIMPLE_AUDIO {
             # get mixer data
             this.computer.ram.write();
             this.mixer.load();
 
-            $call clockExt
+            $call clock
 
             this.computer.mar.inc();
 
-            $call clockExt
+            $call clock
         }
         
         # get sound duration

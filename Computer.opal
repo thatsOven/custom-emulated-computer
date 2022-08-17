@@ -30,9 +30,9 @@ new int BITS                  = 16,
         SQUARE_AMP_BITS       = 4,
         SOUND_CHANNELS        = 256;
 
-new float DEFAULT_CLOCK_PULSE_DURATION = 0.01,
-          SCREEN_SCALE                 = 1,
-          SAWTOOTH_MULT                = 2.5;
+new float CLOCK_PULSE_DURATION = 0,
+          SCREEN_SCALE         = 1,
+          SAWTOOTH_MULT        = 2.5;
 
 new bool HEX_DUMP                  = False,
          STACK_PROTECTION          = True,
@@ -43,8 +43,8 @@ new bool HEX_DUMP                  = False,
          SIMPLE_AUDIO              = False,
          ALWAYS_NOP_WAIT           = False;
 
-$macro clockExt
-    sleep(this.computer.clockSpeed);
+$macro clock
+    sleep(CLOCK_PULSE_DURATION);
 $end
 
 $include os.path.join("HOME_DIR", "compiler", "Compiler.opal")
@@ -52,10 +52,6 @@ $include os.path.join("HOME_DIR", "baseComponents", "baseComponents.opal")
 $includeDirectory os.path.join("HOME_DIR", "components")
 
 new class Computer {
-    $macro clock
-        sleep(this.clockSpeed);
-    $end
-    
     $include os.path.join("HOME_DIR", "microcode", "microcodeMethods.opal")
 
     new method __init__() {
@@ -105,7 +101,6 @@ new class Computer {
         this.waitAddress = None;
         this.waitEnd     = None;
 
-        this.clockSpeed    = DEFAULT_CLOCK_PULSE_DURATION;
         this.keyBufferAddr = 2 ** RAM_ADDR_SIZE - 1;
 
         $include os.path.join("HOME_DIR", "microcode", "CPUMicrocode.opal")
@@ -230,14 +225,64 @@ new function prettyPrintFreq(n) {
     return str(round(n, 4)) + " Hz";
 }
 
-main {
-    new <Computer> computer = Computer();
-    new <Compiler> compiler = Compiler();
+new function getFloatArg(name, shName) {
+    if name in argv {
+        new int idx = argv.index(name);
+        argv.pop(idx);
 
+        new dynamic value = argv.pop(idx);
+
+        try {
+            value = float(value);
+        } catch ValueError {
+            IO.out(f"Invalid {shName} value given. Using default.\n");
+        } success {
+            return value;
+        }
+    }
+}
+
+main {
     if "--simple-audio" in argv {
         argv.remove("--simple-audio");
         SIMPLE_AUDIO = True;
     }
+
+    if "--resolution" in argv {
+        new int idx = argv.index("--resolution");
+        argv.pop(idx);
+
+        new list res = argv.pop(idx).lower().split("x");
+
+        if len(res) != 2 {
+            IO.out("Invalid resolution value given. Using default.\n");
+        } else {
+            new dynamic tmp = Vector().fromList(res);
+
+            try {
+                tmp = tmp.getIntCoords();
+            } catch ValueError {
+                IO.out("Invalid resolution value given. Using default.\n");
+            } success {
+                RESOLUTION = tmp;
+            }
+        }
+    }
+
+    new dynamic tmp = getFloatArg("--scale", "scale");
+
+    if tmp is not None {
+        SCREEN_SCALE = tmp;
+    }
+
+    dynamic: tmp = getFloatArg("--clock", "clock");
+
+    if tmp is not None {
+        CLOCK_PULSE_DURATION = tmp;
+    }
+
+    new <Computer> computer = Computer();
+    new <Compiler> compiler = Compiler();
 
     new dynamic txt;
     with open(argv[1], "r") as txt {
@@ -247,14 +292,13 @@ main {
     computer.sp.data = compiler.decimalToBitarray(compiler.stackPos);
 
     computer.interruptHandlers = compiler.interruptHandlers;
-    computer.clockSpeed        = compiler.clockSpeed;
     computer.keyBufferAddr     = compiler.keyBufferAddr;
     computer.waitAddress       = compiler.waitAddress;
     computer.waitEnd           = compiler.waitEnd;
 
     IO.out("Timing clock...\n");
     new dynamic sTime = default_timer();
-    sleep(computer.clockSpeed);
+    $call clock
     sTime = default_timer() - sTime;
 
     IO.out(f"CPU clock is running at ~{prettyPrintFreq(1 / sTime)}.\n");

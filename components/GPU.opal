@@ -38,27 +38,27 @@ new class GPU : Component {
     new method __get3Data() {
         this.computer.mar.load();
 
-        $call clockExt
+        $call clock
 
         this.computer.ram.write();
         new dynamic w = Register(this.computer, BITS, False);
         w.load();
 
-        $call clockExt
+        $call clock
 
         this.computer.mar.inc();
 
-        $call clockExt
+        $call clock
 
         this.computer.ram.write();
         new dynamic h = Register(this.computer, BITS, False);
         h.load();
 
-        $call clockExt
+        $call clock
 
         this.computer.mar.inc();
 
-        $call clockExt
+        $call clock
 
         this.computer.ram.write();
         new dynamic c = Register(this.computer, BITS, False);

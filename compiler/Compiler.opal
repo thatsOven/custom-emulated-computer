@@ -157,7 +157,6 @@ new class Compiler {
         this.variables = {};
         this.interruptHandlers = {};
 
-        this.clockSpeed = DEFAULT_CLOCK_PULSE_DURATION;
         this.keyBufferAddr = 2 ** RAM_ADDR_SIZE - 1;
 
         this.result = [];
@@ -238,9 +237,6 @@ new class Compiler {
                 continue
             } elif line.startswith(".interrupt") or line.startswith(".waiting") or line.startswith(".endwaiting") {
                 continue;
-            } elif line.startswith(".clock") {
-                this.clockSpeed = float(line[7:]);
-                continue;
             } elif line.startswith(".keyBuffer") {
                 this.keyBufferAddr = this.oLine;
 
@@ -280,7 +276,7 @@ new class Compiler {
                 continue;
             }
 
-            if line.startswith(":") or line.startswith(".clock") or line.startswith(".keyBuffer") {
+            if line.startswith(":") or line.startswith(".keyBuffer") {
                 this.iLine++;
                 continue;
             } elif line[0].isdigit() or line.startswith("'") or line.startswith("-") {
