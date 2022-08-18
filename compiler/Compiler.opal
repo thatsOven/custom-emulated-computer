@@ -321,7 +321,7 @@ new class Compiler {
                 this.iLine++;
                 continue;
             } elif line.startswith(".interrupt") {
-                this.interruptHandlers[this.getValue(line[11:])] = this.fill(this.decimalToBitarray(this.oLine), RAM_ADDR_SIZE);
+                this.interruptHandlers[this.getValue(line[11:])] = this.decimalToBitarray(this.oLine);
 
                 this.iLine++;
                 continue;

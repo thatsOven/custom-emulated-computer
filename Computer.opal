@@ -14,7 +14,7 @@ new int BITS                  = 16,
         SCREEN_MODE_BITS      = 2,
         FLAGS_QTY             = 3,
         INSTRUCTION_BITS      = 8,
-        INTERRUPT_BITS        = 8,
+        INTERRUPT_BITS        = 4,
         GPU_MODE_BITS         = 2,
         COLOR_BITS            = 5,
         GPU_MODIFIER_BITS     = 1,
@@ -90,7 +90,6 @@ new class Computer {
 
         this.interruptRegister = Register(this, INTERRUPT_BITS, False);
         this.__onInterrupt     = False;
-        this.__intFromBank     = 0;
         this.interruptHandlers = {};
 
         # data used for stack protection
@@ -177,29 +176,13 @@ new class Computer {
             if interrupt in this.interruptHandlers {
                 this.__ps(this.getProgramCounter())();
 
-                $call clock
-
                 this.bus.load(this.interruptHandlers[interrupt]);
                 this.getProgramCounter().load();
 
-                if RAM_ADDR_SIZE > BITS {
-                    new <Register> tmp = Register(None, RAM_ADDR_SIZE - BITS, False);
-                    tmp.data = this.mar.data[BITS:].copy();
-                    this.__intFromBank = tmp.toDec();
-
-                    $call clock
-
-                    this.bus.load(this.interruptHandlers[interrupt][BITS:]);
-                    this.mar.loadMBSR();
-                }
-
                 this.__onInterrupt = True;
-            } else {
+            } elif UNHANDLED_INTERRUPT_ALERT {
                 this.interruptRegister.reset();
-
-                if UNHANDLED_INTERRUPT_ALERT {
-                    IO.out("WARNING: Unhandled interrupt received.\n");
-                }
+                IO.out("WARNING: Unhandled interrupt received.\n");
             }
         }
     }
@@ -263,11 +246,6 @@ main {
     if "--simple-audio" in argv {
         argv.remove("--simple-audio");
         SIMPLE_AUDIO = True;
-    }
-
-    if "--hex-dump" in argv {
-        argv.remove("--hex-dump");
-        HEX_DUMP = True;
     }
 
     if "--resolution" in argv {

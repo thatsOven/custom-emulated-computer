@@ -244,11 +244,6 @@ new method __jsr() {
 }
 
 new method __rti() {
-    this.bus.load(Compiler.decimalToBitarray(this.__intFromBank));
-    this.mar.loadMBSR();
-
-    $call clock
-
     this.__pp(this.getProgramCounter())();
 
     this.__onInterrupt = False;
