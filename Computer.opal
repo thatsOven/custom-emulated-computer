@@ -180,9 +180,12 @@ new class Computer {
                 this.getProgramCounter().load();
 
                 this.__onInterrupt = True;
-            } elif UNHANDLED_INTERRUPT_ALERT {
+            } else {
                 this.interruptRegister.reset();
-                IO.out("WARNING: Unhandled interrupt received.\n");
+
+                if UNHANDLED_INTERRUPT_ALERT {
+                    IO.out("WARNING: Unhandled interrupt received.\n");
+                }
             }
         }
     }
