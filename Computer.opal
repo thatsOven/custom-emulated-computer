@@ -251,6 +251,11 @@ main {
         SIMPLE_AUDIO = True;
     }
 
+    if "--hex-dump" in argv {
+        argv.remove("--hex-dump");
+        HEX_DUMP = True;
+    }
+
     if "--resolution" in argv {
         new int idx = argv.index("--resolution");
         argv.pop(idx);
