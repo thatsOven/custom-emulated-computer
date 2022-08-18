@@ -235,13 +235,15 @@ new class Compiler {
                 this.oLine += len(eval(line[7:]));
 
                 continue
-            } elif line.startswith(".interrupt") or line.startswith(".waiting") or line.startswith(".endwaiting") {
+            } elif line.startswith(".interrupt") or line.startswith(".endwaiting") {
                 continue;
             } elif line.startswith(".keyBuffer") {
                 this.keyBufferAddr = this.oLine;
 
                 this.oLine++; 
                 continue;
+            } elif line.startswith(".waiting") {
+                this.oLine += 8;
             }
 
             new dynamic instruction, charPtr;
