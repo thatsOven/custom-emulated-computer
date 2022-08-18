@@ -29,7 +29,7 @@ this.INSTRUCTION_HANDLERS = {
     "adi": this.__adsbi(27),
     "sbi": this.__adsbi(28),
     "dpm": this.__fl(29),
-    "dlp": this.__np(30),
+    "dpl": this.__np(30),
     "dli": this.__li(31),
     "fdl": this.__fl(32),
     "jmp": this.__li(33),

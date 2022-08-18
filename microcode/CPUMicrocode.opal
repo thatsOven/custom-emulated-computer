@@ -49,7 +49,7 @@ this.__microcode = (
     # DPM <mode inline>
     this.__fl(this.display.mode),
 
-    # DLP
+    # DPL
     this.display.show,
 
     # DLI <value>
