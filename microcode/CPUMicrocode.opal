@@ -281,7 +281,7 @@ this.__microcode = (
     this.__addrStore(this.regY, this.regB),
     this.__addrStore(this.regY, this.display),
 
-    # SND <soundcode (amp + freq)>
+    # SND <address>
     this.__snd,
 
     # SN?
