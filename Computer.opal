@@ -55,7 +55,7 @@ new class Computer {
     $include os.path.join("HOME_DIR", "microcode", "microcodeMethods.opal")
 
     new method __init__() {
-        this.bus = BUS(BITS);
+        this.bus = BUS(max(BITS, RAM_ADDR_SIZE));
 
         this.regX = Register(this, BITS);
         this.regY = Register(this, BITS);
