@@ -138,7 +138,7 @@ new class GPU : Component {
                     }
                 } 
             }
-            # fill mode
+            # rect mode
             case [0, 1] {
                 new dynamic w, h, c;
                 unchecked: w, h, c = this.__get3Data();
