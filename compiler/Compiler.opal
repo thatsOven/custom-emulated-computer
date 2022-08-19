@@ -367,10 +367,6 @@ new class Compiler {
 
             this.iLine++;
         }
-
-        if this.waitAddress is not None and this.waitEnd is None {
-            this.__error('"waiting" code has no "endwaiting" instruction');
-        }
         
         if this.hadError {
             IO.out(f"Compilation was not successful. 1 word (HLT instruction) written to RAM ({BITS / 8} bytes)\n");

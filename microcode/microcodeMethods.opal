@@ -371,10 +371,12 @@ new method __wt(toWait) {
 
                 t -= default_timer() - st;
 
-                if this.ram.memory[base].toDec() >= this.waitEnd {
-                    this.waitAddress = None;
-                    sleep(t);
-                    break;
+                if this.waitEnd is not None {
+                    if this.ram.memory[base].toDec() >= this.waitEnd {
+                        this.waitAddress = None;
+                        sleep(t);
+                        break;
+                    }
                 }
             }
 
