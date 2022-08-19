@@ -13,7 +13,7 @@ to run, open or compile `Computer.opal` using the opal compiler, and pass it a f
 	- Sets the computer screen resolution. Default is 256x256.
 	- **Usage**: --resolution [width]x[height]
 - `--scale`
-	- Sets the computer screen windows scale. Default is 1.
+	- Sets the computer screen window scale. Default is 1.
 	- **Usage**: --scale [scale factor]
 - `--hex-dump`
 	- Shows an hex dump of the data that is written to RAM after compilation.
