@@ -298,7 +298,7 @@ this.__microcode = (
     this.__wt(this.regA),
     this.__wt(this.regB),
 
-    # FLS
+    # FLS <value inline>
     this.__fls,
 
     # M?S
