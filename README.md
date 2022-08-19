@@ -403,7 +403,7 @@ Some instructions are used to determine computer settings or special actions, an
 	- **Usage**: .waiting
 - `.endwaiting`
 	- Marks the last line of the waiting segment.
-	- The CPU will stop calling the waiting section when waiting once this line has been reached. If you plan on making the waiting section loop, you should add an empty word before the `.endwaiting` instruction to don't stop the code once the last line has been reached.
+	- The CPU will stop calling the waiting section when waiting once this line has been reached. If you plan on making the waiting section loop, this statement should be omitted.
 	- **Usage**: .endwaiting
 # GPU
 ## Full color code
