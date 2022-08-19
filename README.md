@@ -374,6 +374,10 @@ It also contains an alphanumeric display (often used as a data register, referre
 	-	Expressions that only require addition and subtraction between the items mentioned above.
 - Expressions can be used with no instruction, and they will be stored in RAM at the address that line of code represents.
 - If you leave a field that needs and expression as blank, it will be 0 by default.
+## Labels
+- Labels are used to identify memory addresses;
+- They are created by placing a colon at the beginning of the line, then giving it a name (example: `:loop`);
+- Label names can only contain letters.
 ## Comments
 Code can be commented out using an hash at the beginning of a line.
 ## Compiler instructions
