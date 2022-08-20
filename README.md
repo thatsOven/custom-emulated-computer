@@ -22,9 +22,7 @@ to run, open or compile `Computer.opal` using the opal compiler, and pass it a f
 	- Switches to the older sound chip system, mostly used for compatibility and performance [Sound chip - Sound code].
 	- **Usage**: --simple-audio
 # General specs
-The computer, designed to have a 16 bits CPU, supports a maximum of 32 MB of RAM (around 16 million addresses), split in 256 memory banks, each having a maximum size of 128 KB (65536 addresses). By default, the computer uses 2 MB of RAM split in 16 memory banks. The GPU has a dedicated video memory, that can be of a maximum size of 12 GB (when assuming a 65536x65536 screen resolution). The video memory size depends on the resolution set by the user. By default, it can store 196 KB of data using a 256x256 resolution.
-
-NOTE: The CPU could be easily upgraded to support a maximum of 8 GB of RAM split in 65536 memory banks, but it's impractical.
+The computer, designed to have a 16 bits CPU, supports a maximum of 8 GB of RAM (around 4 billion addresses), split in 65536 memory banks, each having a maximum size of 128 KB (65536 addresses). By default, the computer uses 2 MB of RAM split in 16 memory banks. The GPU has a dedicated video memory, that can be of a maximum size of 12 GB (when assuming a 65536x65536 screen resolution). The video memory size depends on the resolution set by the user. By default, it can store 196 KB of data using a 256x256 resolution.
 
 # Registers
 The computer contains 5 general purpose registers (X, Y, Z, A, B), 2 of which (A and B) are directly connected to the ALU.
