@@ -13,7 +13,7 @@ to run, open or compile `Computer.opal` using the opal compiler, and pass it a f
 	- Sets the computer screen resolution. Default is 256x256.
 	- **Usage**: --resolution [width]x[height]
 - `--scale`
-	- Sets the computer screen windows scale. Default is 1.
+	- Sets the computer screen window scale. Default is 1.
 	- **Usage**: --scale [scale factor]
 - `--hex-dump`
 	- Shows an hex dump of the data that is written to RAM after compilation.
@@ -22,12 +22,10 @@ to run, open or compile `Computer.opal` using the opal compiler, and pass it a f
 	- Shows the time elapsed since the computer started running when the computer stops.
 	- **Usage** --time
 - `--simple-audio`
-	- Switches the system to the older sound chip system, mostly used for compatibility and performance [Sound chip - Sound code].
+	- Switches to the older sound chip system, mostly used for compatibility and performance [Sound chip - Sound code].
 	- **Usage**: --simple-audio
 # General specs
-The computer, designed to have a 16 bits CPU, supports a maximum of 32 MB of RAM (around 16 million addresses), split in 256 memory banks, each having a maximum size of 128 KB (65536 addresses). By default, the computer uses 2 MB of RAM split in 16 memory banks. The GPU has a dedicated video memory, that can be of a maximum size of 12 GB (when assuming a 65536x65536 screen resolution). The video memory size depends on the resolution set by the user. By default, it can store 196 KB of data using a 256x256 resolution.
-
-NOTE: The CPU could be easily upgraded to support a maximum of 8 GB of RAM split in 65536 memory banks, but it's impractical.
+The computer, designed to have a 16 bits CPU, supports a maximum of 8 GB of RAM (around 4 billion addresses), split in 65536 memory banks, each having a maximum size of 128 KB (65536 addresses). By default, the computer uses 2 MB of RAM split in 16 memory banks. The GPU has a dedicated video memory, that can be of a maximum size of 12 GB (when assuming a 65536x65536 screen resolution). The video memory size depends on the resolution set by the user. By default, it can store 196 KB of data using a 256x256 resolution.
 
 # Registers
 The computer contains 5 general purpose registers (X, Y, Z, A, B), 2 of which (A and B) are directly connected to the ALU.
@@ -406,7 +404,7 @@ Some instructions are used to determine computer settings or special actions, an
 	- **Usage**: .waiting
 - `.endwaiting`
 	- Marks the last line of the waiting segment.
-	- The CPU will stop calling the waiting section when waiting once this line has been reached. If you plan on making the waiting section loop, you should add an empty word before the `.endwaiting` instruction to don't stop the code once the last line has been reached.
+	- The CPU will stop calling the waiting section when waiting once this line has been reached. If you plan on making the waiting section loop, this statement should be omitted.
 	- **Usage**: .endwaiting
 # GPU
 ## Full color code
