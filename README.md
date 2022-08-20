@@ -18,6 +18,9 @@ to run, open or compile `Computer.opal` using the opal compiler, and pass it a f
 - `--hex-dump`
 	- Shows an hex dump of the data that is written to RAM after compilation.
 	- **Usage** --hex-dump 
+- `--time`
+	- Shows the time elapsed since the computer started running when the computer stops.
+	- **Usage** --time
 - `--simple-audio`
 	- Switches the system to the older sound chip system, mostly used for compatibility and performance [Sound chip - Sound code].
 	- **Usage**: --simple-audio

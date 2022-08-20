@@ -41,7 +41,8 @@ new bool HEX_DUMP                  = False,
          HALT_ON_UNKNOWN           = True,
          UNHANDLED_INTERRUPT_ALERT = False,
          SIMPLE_AUDIO              = False,
-         ALWAYS_NOP_WAIT           = False;
+         ALWAYS_NOP_WAIT           = False,
+         EXECUTION_TIME            = False;
 
 $macro clock
     sleep(CLOCK_PULSE_DURATION);
@@ -50,6 +51,16 @@ $end
 $include os.path.join("HOME_DIR", "compiler", "Compiler.opal")
 $include os.path.join("HOME_DIR", "baseComponents", "baseComponents.opal")
 $includeDirectory os.path.join("HOME_DIR", "components")
+
+new function prettyPrintTime(n) {
+    if n < 1 {
+        n *= 1000;
+
+        return str(round(n, 4)) + " ms";
+    }
+
+    return str(round(n, 4)) + " s";
+}
 
 new class Computer {
     $include os.path.join("HOME_DIR", "microcode", "microcodeMethods.opal")
@@ -101,6 +112,8 @@ new class Computer {
         this.waitAddress = None;
         this.waitEnd     = None;
 
+        this.time = None;
+
         this.keyBufferAddr = 2 ** RAM_ADDR_SIZE - 1;
 
         $include os.path.join("HOME_DIR", "microcode", "CPUMicrocode.opal")
@@ -117,6 +130,13 @@ new class Computer {
 
     new method __quit(event = None) {
         IO.out("CPU Halted.\n");
+
+        if EXECUTION_TIME {
+            this.time = default_timer() - this.time;
+
+            IO.out("Execution time: ", prettyPrintTime(this.time), IO.endl);
+        }
+
         quit;
     }
 
@@ -208,6 +228,7 @@ new class Computer {
     }
 
     new method run() {
+        this.time = default_timer();
         this.graphics.run(handleQuit = False, drawBackground = False, autoUpdate = False);
     }
 }
@@ -254,6 +275,11 @@ main {
     if "--hex-dump" in argv {
         argv.remove("--hex-dump");
         HEX_DUMP = True;
+    }
+
+    if "--time" in argv {
+        argv.remove("--time");
+        EXECUTION_TIME = True;
     }
 
     if "--resolution" in argv {
