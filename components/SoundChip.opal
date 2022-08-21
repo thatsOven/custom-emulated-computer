@@ -3,7 +3,7 @@ new class SoundChip : Component {
             MAX_SQUARE_AMP     = 2 ** SQUARE_AMP_BITS - 1,
             SAWTOOTH_WIDTH_DEN = 2 ** SAWTOOTH_WIDTH_BITS - 1,
             SQUARE_PWM_DEN     = 2 ** SQUARE_PWM_WIDTH_BITS - 1,
-            MAX_AMP            = 2 ** (BITS - SOUND_FREQ_BITS);
+            MAX_AMP            = 2 ** (BITS - SOUND_FREQ_BITS) - 1;
 
     new method __init__(computer) {
         super().__init__(computer);
