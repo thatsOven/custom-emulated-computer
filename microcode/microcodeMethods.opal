@@ -240,7 +240,47 @@ new method __jsr() {
     $call clock
 
     this.getProgramCounter().dec();
+    this.__ps(this.regX)();
+    $call clock
+
+    this.__ps(this.regY)();
+    $call clock
+
+    this.__ps(this.regZ)();
+    $call clock
+
+    this.__ps(this.regA)();
+    $call clock
+
+    this.__ps(this.regB)();
+    $call clock
+
+    this.__ps(this.display)();
+    $call clock
+
     this.__jmp();
+}
+
+new method __rts() {
+    this.__pp(this.display)();
+    $call clock
+
+    this.__pp(this.regB)();
+    $call clock
+
+    this.__pp(this.regA)();
+    $call clock
+
+    this.__pp(this.regZ)();
+    $call clock
+
+    this.__pp(this.regY)();
+    $call clock
+
+    this.__pp(this.regX)();
+    $call clock
+
+    this.__pp(this.getProgramCounter())();
 }
 
 new method __rti() {

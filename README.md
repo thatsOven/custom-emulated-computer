@@ -241,10 +241,10 @@ It also contains an alphanumeric display (often used as a data register, referre
 	 - PPD - 0x80
 - **Usage**: PP*
 ## JSR / Jump SubRoutine / 0x81
-- Jumps to a given memory address and pushes the next address to the stack:
+- Pushes the next address and the current general purpose registers' values to the stack and jumps to a given memory address:
 - **Usage**: JSR [address]
 ## RTS / ReTurn Subroutine / 0x82
-- Jumps to the last memory address saved into the stack:
+- Jumps to the last memory address saved into the stack and restores registers values from it:
 - **Usage**: RTS
 ## NE* / NEgate * / 0x83 - 0x88
 - Negates the value stored in a register. * indicates the register letter:
@@ -286,7 +286,7 @@ It also contains an alphanumeric display (often used as a data register, referre
 	- 2 - rectangle mode:
 		- Draws a rectangle at the location pointed by the GPU pointers. Expects a memory address that points to 3 words of data, respectively containing the rectangle width, height, and color (in full color code[GPU - Full color code] format).
 	- 3 - line mode:
-		- Draws a line starting from the location pointer by the GPU pointers. Expects a memory address that points to 3 words of data, respectively containing the horizontal and vertical line destination coordinates, and a full color code[GPU - Full color code].
+		- Draws a line starting from the location pointed by the GPU pointers. Expects a memory address that points to 3 words of data, respectively containing the horizontal and vertical line destination coordinates, and a full color code[GPU - Full color code].
 - **Usage**: GPM [mode]
 ## FS* / Framebuffer Store * / 0x92 - 0x97
 - Sends data to the GPU as explained in the GPM instruction section. The data is taken from any general purpose register. * indicates the register letter:

@@ -211,7 +211,7 @@ this.__microcode = (
     this.__jsr,
 
     # RTS
-    this.__pp(this.programCounter),
+    this.__rts,
 
     # NE?
     this.regX.invert,
