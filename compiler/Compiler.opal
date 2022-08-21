@@ -298,7 +298,7 @@ new class Compiler {
 
                 this.iLine++;
                 continue;
-            } elif line.startswith(".fill") or (stack := line.startswith(".stack")) {
+            } elif (stack := line.startswith(".stack")) or line.startswith(".fill") {
                 new dynamic charPtr, plh;
                 unchecked:
                 plh, charPtr = this.getUntilNotWord(line, 1);
