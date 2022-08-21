@@ -2,7 +2,8 @@ new class SoundChip : Component {
     new int MAX_SAWTOOTH_AMP   = 2 ** SAWTOOTH_AMP_BITS - 1,
             MAX_SQUARE_AMP     = 2 ** SQUARE_AMP_BITS - 1,
             SAWTOOTH_WIDTH_DEN = 2 ** SAWTOOTH_WIDTH_BITS - 1,
-            SQUARE_PWM_DEN     = 2 ** SQUARE_PWM_WIDTH_BITS - 1;
+            SQUARE_PWM_DEN     = 2 ** SQUARE_PWM_WIDTH_BITS - 1,
+            MAX_AMP            = 2 ** (BITS - SOUND_FREQ_BITS);
 
     new method __init__(computer) {
         super().__init__(computer);
@@ -89,7 +90,7 @@ new class SoundChip : Component {
 
     new method play() {
         new dynamic amp, freq, tmp, sample;
-        amp = Utils.translate(this.amplitude.toDec(), 0, len(this.amplitude.data), 0, MAX_VOL_MULT);
+        amp = Utils.translate(this.amplitude.toDec(), 0, SoundChip.MAX_AMP, 0, MAX_VOL_MULT);
         freq = this.frequency.toDec();
 
         if amp == 0 {
