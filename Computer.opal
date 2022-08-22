@@ -83,6 +83,8 @@ new class Computer {
 
         this.display = AlphaNumericDisplay(this);
 
+        this.swap = Register(this, BITS, False);
+
         IO.out("Initializing graphics...\n");
 
         this.gpu = GPU(this, RESOLUTION);
@@ -140,10 +142,24 @@ new class Computer {
         quit;
     }
 
-    new method __memSwap(bufPos, fromReg, toAddr) {
-        this.ram.memory[bufPos].data = fromReg.data.copy();
-        fromReg.data = this.ram.memory[toAddr].data.copy();
-        this.ram.memory[toAddr].data = this.ram.memory[bufPos].data.copy();
+    new method __memSwap(fromReg, toAddr) {
+        fromReg.write();
+        this.swap.load();
+
+        $call clock
+
+        this.bus.load(Compiler.decimalToBitarray(toAddr));
+        this.mar.load();
+
+        $call clock
+
+        this.ram.write();
+        fromReg.load();
+
+        $call clock
+        
+        this.swap.write();
+        this.ram.load();
     }
 
     new method getProgramCounter() {

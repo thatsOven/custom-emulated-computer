@@ -358,12 +358,12 @@ new method __wt(toWait) {
                         base = this.waitAddress;
 
             new dynamic swTime = default_timer();
-            this.__memSwap(base + 7,    this.regA, base + 1);
-            this.__memSwap(base + 7,    this.regB, base + 2);
-            this.__memSwap(base + 7,    this.regX, base + 3);
-            this.__memSwap(base + 7,    this.regY, base + 4);
-            this.__memSwap(base + 7,    this.regZ, base + 5);
-            this.__memSwap(base + 7, this.display, base + 6);
+            this.__memSwap(   this.regA, base + 1);
+            this.__memSwap(   this.regB, base + 2);
+            this.__memSwap(   this.regX, base + 3);
+            this.__memSwap(   this.regY, base + 4);
+            this.__memSwap(   this.regZ, base + 5);
+            this.__memSwap(this.display, base + 6);
 
             t -= (default_timer() - swTime) * 2;
             
@@ -376,11 +376,11 @@ new method __wt(toWait) {
                 $call clock
 
                 this.ram.write();
-                this.regZ.load();
+                this.swap.load();
 
                 $call clock
 
-                this.regZ.write();
+                this.swap.write();
                 this.mar.load();
 
                 $call clock
@@ -396,15 +396,15 @@ new method __wt(toWait) {
                 $call clock
 
                 this.ram.write();
-                this.regZ.load();
+                this.swap.load();
 
                 $call clock
 
-                this.regZ.inc();
+                this.swap.inc();
 
                 $call clock
 
-                this.regZ.write();
+                this.swap.write();
                 this.ram.load();
 
                 this.__handleInstruction();
@@ -420,12 +420,12 @@ new method __wt(toWait) {
                 }
             }
 
-            this.__memSwap(base + 7,    this.regA, base + 1);
-            this.__memSwap(base + 7,    this.regB, base + 2);
-            this.__memSwap(base + 7,    this.regX, base + 3);
-            this.__memSwap(base + 7,    this.regY, base + 4);
-            this.__memSwap(base + 7,    this.regZ, base + 5);
-            this.__memSwap(base + 7, this.display, base + 6);
+            this.__memSwap(   this.regA, base + 1);
+            this.__memSwap(   this.regB, base + 2);
+            this.__memSwap(   this.regX, base + 3);
+            this.__memSwap(   this.regY, base + 4);
+            this.__memSwap(   this.regZ, base + 5);
+            this.__memSwap(this.display, base + 6);
 
             this.waiting = False;
         }
