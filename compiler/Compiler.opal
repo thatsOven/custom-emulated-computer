@@ -243,7 +243,7 @@ new class Compiler {
                 this.oLine++; 
                 continue;
             } elif line.startswith(".waiting") {
-                this.oLine += 8;
+                this.oLine += 7;
             }
 
             new dynamic instruction, charPtr;
