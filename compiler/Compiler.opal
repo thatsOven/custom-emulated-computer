@@ -330,10 +330,10 @@ new class Compiler {
             } elif line.startswith(".waiting") {
                 this.waitAddress = this.oLine;
 
-                this.result += [this.fill(this.decimalToBitarray(this.oLine + 8))];
-                this.result += [this.fill([]) for _ in range(7)];
+                this.result += [this.fill(this.decimalToBitarray(this.oLine + 7))];
+                this.result += [this.fill([]) for _ in range(6)];
 
-                this.oLine += 8;
+                this.oLine += 7;
                 
                 this.iLine++;
                 continue;

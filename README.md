@@ -400,7 +400,7 @@ Some instructions are used to determine computer settings or special actions, an
 	- **Usage**: .interrupt [interrupt number]
 - `.waiting`
 	-  Locates a segment of code that is ran when the CPU is waiting.
-	- This instruction will reserve 8 words of RAM to store a separate program counter for the waiting code section, register states (so that they can get restored when the CPU executes the waiting section again), and a buffer position for register-memory swapping.
+	- This instruction will reserve 7 words of RAM to store a separate program counter for the waiting code section and register states (so that they can get restored when the CPU executes the waiting section again).
 	- **Usage**: .waiting
 - `.endwaiting`
 	- Marks the last line of the waiting segment.
