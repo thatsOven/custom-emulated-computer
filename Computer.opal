@@ -31,8 +31,7 @@ new int BITS                  = 16,
         SOUND_CHANNELS        = 256;
 
 new float CLOCK_PULSE_DURATION = 0,
-          SCREEN_SCALE         = 1,
-          SAWTOOTH_MULT        = 2.5;
+          SCREEN_SCALE         = 1;
 
 new bool HEX_DUMP                  = False,
          STACK_PROTECTION          = True,
