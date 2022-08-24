@@ -22,7 +22,7 @@ to run, open or compile `Computer.opal` using the opal compiler, and pass it a f
 	- Shows the time elapsed since the computer started running when the computer stops.
 	- **Usage** --time
 - `--simple-audio`
-	- Switches to the older sound chip system, mostly used for compatibility and performance [Sound chip - Sound code].
+	- Switches to the older sound chip system, mostly used for compatibility and performance [Sound chip - Sound code](https://github.com/thatsOven/custom-emulated-computer#sound-code).
 	- **Usage**: --simple-audio
 # General specs
 The computer, designed to have a 16 bits CPU, supports a maximum of 8 GB of RAM (around 4 billion addresses), split in 65536 memory banks, each having a maximum size of 128 KB (65536 addresses). By default, the computer uses 2 MB of RAM split in 16 memory banks. The GPU has a dedicated video memory, that can be of a maximum size of 12 GB (when assuming a 65536x65536 screen resolution). The video memory size depends on the resolution set by the user. By default, it can store 196 KB of data using a 256x256 resolution.
@@ -280,13 +280,13 @@ It also contains an alphanumeric display (often used as a data register, referre
 ## GPM / GPu Mode / 0x91
 - Sets the GPU mode. Available modes are:
 	- 0 - pixel mode:
-		- Draws a pixel at the location pointed by the GPU pointers. Expects a full color code[GPU - Full color code] as input.
+		- Draws a pixel at the location pointed by the GPU pointers. Expects a [full color code](https://github.com/thatsOven/custom-emulated-computer#full-color-code) as input.
 	- 1 - text mode:
-		- Draws a character at the location pointed by the GPU pointers. Expects a background-foreground-character code[GPU - Text color code] as input.
+		- Draws a character at the location pointed by the GPU pointers. Expects a [background-foreground-character code](https://github.com/thatsOven/custom-emulated-computer#text-color-code) as input.
 	- 2 - rectangle mode:
-		- Draws a rectangle at the location pointed by the GPU pointers. Expects a memory address that points to 3 words of data, respectively containing the rectangle width, height, and color (in full color code[GPU - Full color code] format).
+		- Draws a rectangle at the location pointed by the GPU pointers. Expects a memory address that points to 3 words of data, respectively containing the rectangle width, height, and color (in [full color code](https://github.com/thatsOven/custom-emulated-computer#full-color-code) format).
 	- 3 - line mode:
-		- Draws a line starting from the location pointed by the GPU pointers. Expects a memory address that points to 3 words of data, respectively containing the horizontal and vertical line destination coordinates, and a full color code[GPU - Full color code].
+		- Draws a line starting from the location pointed by the GPU pointers. Expects a memory address that points to 3 words of data, respectively containing the horizontal and vertical line destination coordinates, and a [full color code](https://github.com/thatsOven/custom-emulated-computer#full-color-code).
 - **Usage**: GPM [mode]
 ## FS* / Framebuffer Store * / 0x92 - 0x97
 - Sends data to the GPU as explained in the GPM instruction section. The data is taken from any general purpose register. * indicates the register letter:
@@ -327,10 +327,10 @@ It also contains an alphanumeric display (often used as a data register, referre
 	- AYD - 0xa7
 - **Usage**: A?*
 ## SND / SouND / 0xa8
-- Plays a sound. Expects a memory address pointing to a sound code[SoundChip - Sound code]:
+- Plays a sound. Expects a memory address pointing to a [sound code](https://github.com/thatsOven/custom-emulated-computer#sound-code):
 - **Usage**: SND [address]
 ## SN* / SouNd * / 0xa9 - 0xad
-- Plays a sound. Expects a memory address pointing to a sound code[SoundChip - Sound code] stored in a general purpose register. * indicates the register letter:
+- Plays a sound. Expects a memory address pointing to a [sound code](https://github.com/thatsOven/custom-emulated-computer#sound-code) stored in a general purpose register. * indicates the register letter:
 	 - SNX - 0xa9
 	 - SNY - 0xaa
 	 - SNZ - 0xab
@@ -345,7 +345,7 @@ It also contains an alphanumeric display (often used as a data register, referre
 	 - WTA - 0xb1
 	 - WTB - 0xb2
 - **Usage**: WT*
-- The CPU might also switch to a secondary process while waiting [Compiler - Compiler instructions - ".waiting"].
+- The CPU might also switch to a secondary process while [waiting](https://github.com/thatsOven/custom-emulated-computer#compiler-instructions).
 ## FLS / Fast Load memory bank Selector / 0xb3
 - Loads the memory bank selector register with a value taken from the low half of the instruction register:
 - **Usage**: FLS [value]
