@@ -21,9 +21,9 @@ to run, open or compile `Computer.opal` using the opal compiler, and pass it a f
 - `--time`
 	- Shows the time elapsed since the computer started running when the computer stops.
 	- **Usage** --time
-- `--simple-audio`
-	- Switches to the older sound chip system, mostly used for compatibility and performance [[Sound chip - Sound code]](https://github.com/thatsOven/custom-emulated-computer#sound-code).
-	- **Usage**: --simple-audio
+- `--mixer-words`
+	- Selects the amount of words dedicated to each mixer code. Default is 1 [[Sound chip - Sound code]](https://github.com/thatsOven/custom-emulated-computer#sound-code).
+	- **Usage**: --mixer-words [word count]
 # General specs
 The computer, designed to have a 16 bits CPU, supports a maximum of 8 GB of RAM (around 4 billion addresses), split in 65536 memory banks, each having a maximum size of 128 KB (65536 addresses). By default, the computer uses 2 MB of RAM split in 16 memory banks. The GPU has a dedicated video memory, that can be of a maximum size of 12 GB (when assuming a 65536x65536 screen resolution). The video memory size depends on the resolution set by the user. By default, it can store 196 KB of data using a 256x256 resolution.
 
@@ -423,17 +423,18 @@ A text color code is a word composed like this:
 NOTE:  The character set is not complete yet.
 # Sound chip
 ## Sound code
-A sound code is 3 words of data, composed like this:
+A sound code is 2 to 4 words of data, composed like this:
 ```
 [ amplitude ][ frequency ]
 |- 3 bits  -||- 13 bits -|
-[     waveform code      ]
+[     1st mixer word     ]
+|------- 16 bits --------|
+[     2nd mixer word     ]
 |------- 16 bits --------|
 [   sound duration (ms)  ]
 |------- 16 bits --------|
 ```
-When the `--simple-audio` terminal argument is given, the waveform code is skipped (mostly for compatibility with older programs, but it also gives a performance benefit, while the sound chip will be limited to generating square waves). 
-A waveform code is used to create a custom waveform by combining multiple waveforms, and it is composed like this:
+Mixer codes are used to create a custom waveform by combining multiple waveforms. When the amount of mixer codes is 0, the sound chip will use square waves for every sound. The first mixer code is composed like this:
 ```
 Most significant bit
 [    sawtooth width    ][  sawtooth amplitude   ]
@@ -445,3 +446,13 @@ Most significant bit
 - The square PWM sawtooth width controls the width of a sawtooth wave on which the square wave will be modulated (0 for no modulation);
 - The sawtooth amplitude controls the relative amplitude of the sawtooth wave;
 - The sawtooth width controls the "width of the rising ramp as a proportion of the total cycle" (https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.sawtooth.html) of the sawtooth wave.
+
+The second mixer code is composed like this:
+
+```
+[ noise amplitude ][ square duty cycle ][ square amplitude ]
+|----- 5 bits ----||------ 6 bits -----||----- 5 bits -----|
+```
+- The square amplitude controls the relative amplitude of a second square wave;
+- The square duty cycle controls the duty cycle of the second square wave;
+- The noise amplitude controls the relative amplitude of a white noise sample.

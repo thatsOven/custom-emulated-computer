@@ -28,7 +28,11 @@ new int BITS                  = 16,
         SAWTOOTH_AMP_BITS     = 4,
         SQUARE_PWM_WIDTH_BITS = 4,
         SQUARE_AMP_BITS       = 4,
-        SOUND_CHANNELS        = 256;
+        ND_SQUARE_AMP_BITS    = 5,
+        SQUARE_DUTY_BITS      = 6,
+        NOISE_AMP_BITS        = 5,
+        SOUND_CHANNELS        = 256,
+        MIXER_WORDS           = 1;
 
 new float CLOCK_PULSE_DURATION = 0,
           SCREEN_SCALE         = 1;
@@ -39,7 +43,6 @@ new bool HEX_DUMP                  = False,
          UNKNOWN_OPCODE_ALERT      = True,
          HALT_ON_UNKNOWN           = True,
          UNHANDLED_INTERRUPT_ALERT = False,
-         SIMPLE_AUDIO              = False,
          ALWAYS_NOP_WAIT           = False,
          EXECUTION_TIME            = False;
 
@@ -282,11 +285,6 @@ new function getFloatArg(name, shName) {
 }
 
 main {
-    if "--simple-audio" in argv {
-        argv.remove("--simple-audio");
-        SIMPLE_AUDIO = True;
-    }
-
     if "--hex-dump" in argv {
         argv.remove("--hex-dump");
         HEX_DUMP = True;
@@ -328,6 +326,12 @@ main {
 
     if tmp is not None {
         CLOCK_PULSE_DURATION = tmp;
+    }
+
+    dynamic: tmp = getFloatArg("--mixer-words", "mixer word quantity");
+
+    if tmp is not None {
+        MIXER_WORDS = int(tmp);
     }
 
     new <Computer> computer = Computer();
