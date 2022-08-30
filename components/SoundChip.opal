@@ -117,7 +117,7 @@ new class SoundChip : Component {
             noiseAmp.data    = this.mixerNd.data[p0:p1];
 
             return tmp + ((ndSquareAmp.toDec() / SoundChip.MAX_ND_SQUARE_AMP) * signal.square(baseArray, squareDuty.toDec() / SoundChip.SQUARE_DUTY_DEN)) + 
-                         ((   noiseAmp.toDec() /     SoundChip.MAX_NOISE_AMP) * numpy.random.random(len(baseArray)));
+                         ((   noiseAmp.toDec() /     SoundChip.MAX_NOISE_AMP) * numpy.random.uniform(-1, 1, len(baseArray)));
         } else {
             return tmp;
         }

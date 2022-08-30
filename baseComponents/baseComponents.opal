@@ -109,7 +109,7 @@ new class MemoryAddressRegister : Register {
                 this.data[i] = 0;
             }
         } else {
-            for i = 0; i < len(this.computer.bus.data); i++ {
+            for i = 0; i < this.writable; i++ {
                 this.data[i] = this.computer.bus.data[i];
             }
         }

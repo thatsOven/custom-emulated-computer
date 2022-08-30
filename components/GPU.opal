@@ -14,12 +14,13 @@ new class GPU : Component {
 
     new method __getColor(data) {
         new int prc0 = COLOR_BITS * 2,
-                prc1 = prc0 + COLOR_BITS;
+                prc1 = prc0 + COLOR_BITS,
+                prc2 = prc1 + GPU_MODIFIER_BITS;
 
         new dynamic blue  = data.data[:COLOR_BITS],
                     green = data.data[COLOR_BITS:prc0],
                     red   = data.data[prc0:prc1],
-                    modif = data.data[prc1:];
+                    modif = data.data[prc1:prc2];
 
         new int maxN = 2 ** (COLOR_BITS + GPU_MODIFIER_BITS) - 1;
 
