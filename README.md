@@ -378,7 +378,7 @@ It also contains an alphanumeric display (often used as a data register, referre
 ## Labels
 - Labels are used to identify memory addresses;
 - They are created by placing a colon at the beginning of the line, then giving it a name (example: `:loop`);
-- Label names can only contain letters.
+- Label names can only contain letters and numbers.
 ## Comments
 Code can be commented out using an hash at the beginning of a line.
 ## Compiler instructions

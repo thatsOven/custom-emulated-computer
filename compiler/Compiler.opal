@@ -173,7 +173,7 @@ new class Compiler {
     new method getUntilNotWord(section, charPtr) {
         new str content = "";
 
-        while section[charPtr].isalpha() {
+        while section[charPtr].isalpha() or section[charPtr].isdigit() {
             content += section[charPtr];
             charPtr++;
 
