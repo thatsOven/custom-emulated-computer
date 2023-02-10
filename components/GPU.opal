@@ -72,14 +72,14 @@ new class GPU : Component {
     new method load() {
         match this.mode.data {
             # pixel mode
-            case [0, 0] {
+            case [0, 0, 0] {
                 new <Register> tmp = Register(this.computer, BITS, False);
                 tmp.load();
 
                 this.frameBuffer.set_at((this.x.toDec(), this.y.toDec()), this.__getColor(tmp));
             } 
             # text mode
-            case [1, 0] {
+            case [1, 0, 0] {
                 new <Register> tmp = Register(this.computer, BITS, False);
                 tmp.load();
 
@@ -140,18 +140,36 @@ new class GPU : Component {
                 } 
             }
             # rect mode
-            case [0, 1] {
+            case [0, 1, 0] {
                 new dynamic w, h, c;
                 unchecked: w, h, c = this.__get3Data();
 
                 draw.rect(this.frameBuffer, c, (this.x.toDec(), this.y.toDec(), w, h));
             }
             # line mode
-            case [1, 1] {
+            case [1, 1, 0] {
                 new dynamic dstX, dstY, c;
                 unchecked: dstX, dstY, c = this.__get3Data();
 
                 draw.line(this.frameBuffer, c, (this.x.toDec(), this.y.toDec()), (dstX, dstY));
+            }
+            # b/w mode
+            case [0, 0, 1] {
+                new dynamic resolution = this.frameBuffer.get_size();
+                new <Register> tmp = Register(this.computer, BITS, False);
+                tmp.load();
+
+                new dynamic x = this.x.toDec(),
+                            y = this.y.toDec();
+
+                for i = 0; i < BITS; i++, x++ {
+                    this.frameBuffer.set_at((x, y), (255, 255, 255) if tmp.bits[i] else (0, 0, 0));
+
+                    if x == resolution[0] {
+                        x = 0;
+                        y++;
+                    }
+                }
             }
         }
 

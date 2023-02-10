@@ -287,6 +287,8 @@ It also contains an alphanumeric display (often used as a data register, referre
 		- Draws a rectangle at the location pointed by the GPU pointers. Expects a memory address that points to 3 words of data, respectively containing the rectangle width, height, and color (in [full color code](https://github.com/thatsOven/custom-emulated-computer#full-color-code) format).
 	- 3 - line mode:
 		- Draws a line starting from the location pointed by the GPU pointers. Expects a memory address that points to 3 words of data, respectively containing the horizontal and vertical line destination coordinates, and a [full color code](https://github.com/thatsOven/custom-emulated-computer#full-color-code).
+	- 4 - black/white mode:
+		- Draws 16 pixels according to the binary representation of the given value (1 is white, 0 is black)
 - **Usage**: GPM [mode]
 ## FS* / Framebuffer Store * / 0x92 - 0x97
 - Sends data to the GPU as explained in the GPM instruction section. The data is taken from any general purpose register. * indicates the register letter:
