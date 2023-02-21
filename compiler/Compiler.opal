@@ -234,7 +234,7 @@ new class Compiler {
             } elif line.startswith(".string") {
                 this.oLine += len(eval(line[7:]));
 
-                continue
+                continue;
             } elif line.startswith(".interrupt") or line.startswith(".endwaiting") {
                 continue;
             } elif line.startswith(".keyBuffer") {

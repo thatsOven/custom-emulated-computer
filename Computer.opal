@@ -322,13 +322,13 @@ main {
         SCREEN_SCALE = tmp;
     }
 
-    dynamic: tmp = getFloatArg("--clock", "clock");
+    tmp = getFloatArg("--clock", "clock");
 
     if tmp is not None {
         CLOCK_PULSE_DURATION = tmp;
     }
 
-    dynamic: tmp = getFloatArg("--mixer-words", "mixer word quantity");
+    tmp = getFloatArg("--mixer-words", "mixer word quantity");
 
     if tmp is not None {
         MIXER_WORDS = int(tmp);
