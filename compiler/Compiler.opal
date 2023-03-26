@@ -161,7 +161,7 @@ new class Compiler {
 
         this.result = [];
 
-        $include os.path.join("HOME_DIR", "compiler", "compilerInstructionHandlers.opal")
+        $include os.path.join(HOME_DIR, "compiler", "compilerInstructionHandlers.opal")
     }
 
     new method __error(msg) {

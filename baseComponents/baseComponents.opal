@@ -31,7 +31,7 @@ new class BUS {
     }
 }
 
-$include os.path.join("HOME_DIR", "baseComponents", "Register.opal")
+$include os.path.join(HOME_DIR, "baseComponents", "Register.opal")
 
 new class RAM : Component {
     new method __init__(computer, size) {

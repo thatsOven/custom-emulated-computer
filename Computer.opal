@@ -50,8 +50,8 @@ $macro clock
     sleep(CLOCK_PULSE_DURATION);
 $end
 
-$include os.path.join("HOME_DIR", "compiler", "Compiler.opal")
-$include os.path.join("HOME_DIR", "baseComponents", "baseComponents.opal")
+$include os.path.join(HOME_DIR, "compiler", "Compiler.opal")
+$include os.path.join(HOME_DIR, "baseComponents", "baseComponents.opal")
 $includeDirectory os.path.join("HOME_DIR", "components")
 
 new function prettyPrintTime(n) {
@@ -65,7 +65,7 @@ new function prettyPrintTime(n) {
 }
 
 new class Computer {
-    $include os.path.join("HOME_DIR", "microcode", "microcodeMethods.opal")
+    $include os.path.join(HOME_DIR, "microcode", "microcodeMethods.opal")
 
     new method __init__() {
         this.bus = BUS(max(BITS, RAM_ADDR_SIZE));
@@ -120,7 +120,7 @@ new class Computer {
 
         this.keyBufferAddr = 2 ** RAM_ADDR_SIZE - 1;
 
-        $include os.path.join("HOME_DIR", "microcode", "CPUMicrocode.opal")
+        $include os.path.join(HOME_DIR, "microcode", "CPUMicrocode.opal")
     }
 
     new method generateInterrupt(code) {

@@ -9,7 +9,7 @@ new class GPU : Component {
 
         this.mode = Register(computer, GPU_MODE_BITS, False);
 
-        $include os.path.join("HOME_DIR", "baseComponents", "characterROM.opal")
+        $include os.path.join(HOME_DIR, "baseComponents", "characterROM.opal")
     }
 
     new method __getColor(data) {
