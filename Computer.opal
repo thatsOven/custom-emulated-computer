@@ -7,7 +7,7 @@ package timeit: import default_timer;
 package pygame: import Surface, transform, draw, mixer;
 import numpy;
 
-new <Vector> RESOLUTION = Vector(256, 256);
+new Vector RESOLUTION = Vector(256, 256);
 
 new int BITS                  = 16,
         RAM_ADDR_SIZE         = 20,
@@ -187,7 +187,7 @@ new class Computer {
             this.graphics.loopOnly();
             return;
         } elif instruction >= len(this.__microcode) and UNKNOWN_OPCODE_ALERT {
-            new <Register> tmp = Register(None, RAM_ADDR_SIZE, False);
+            new Register tmp = Register(None, RAM_ADDR_SIZE, False);
             tmp.data = this.getProgramCounter().data.copy();
             tmp.dec();
 
@@ -334,8 +334,8 @@ main {
         MIXER_WORDS = int(tmp);
     }
 
-    new <Computer> computer = Computer();
-    new <Compiler> compiler = Compiler();
+    new Computer computer = Computer();
+    new Compiler compiler = Compiler();
 
     new dynamic txt;
     with open(argv[1], "r") as txt {

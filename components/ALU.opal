@@ -4,7 +4,7 @@ enum FlagIndices {
 
 new class ALU : Component {
     new method __sum(b) {
-        new <Register> result;
+        new Register result;
         result = Register(this.computer, len(this.computer.regA.data), False);
         new int carry = 0;
 
@@ -35,7 +35,7 @@ new class ALU : Component {
     }
 
     new method __bNeg() {
-        new <Register> tmp = Register(None, BITS, False);
+        new Register tmp = Register(None, BITS, False);
         tmp.data = this.computer.regB.data.copy();
         tmp.invert();
         tmp.inc();

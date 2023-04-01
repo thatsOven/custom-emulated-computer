@@ -1,6 +1,6 @@
 new method __nop() {
     if NOP_ALERT {
-        new <Register> tmp = Register(None, RAM_ADDR_SIZE, False);
+        new Register tmp = Register(None, RAM_ADDR_SIZE, False);
         tmp.data = this.getProgramCounter().data.copy();
         tmp.dec();
 

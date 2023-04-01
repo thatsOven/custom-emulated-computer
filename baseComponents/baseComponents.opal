@@ -116,7 +116,7 @@ new class MemoryAddressRegister : Register {
     }
 
     new method loadMBSR() {
-        new <Register> tmp = Register(computer, RAM_ADDR_SIZE - BITS, False);
+        new Register tmp = Register(computer, RAM_ADDR_SIZE - BITS, False);
         tmp.load();
 
         this.data = this.data[:BITS] + tmp.data;

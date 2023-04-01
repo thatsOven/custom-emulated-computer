@@ -6,7 +6,7 @@ new class Compiler {
     new classmethod decimalToBitarray(n) {
         if n < 0 {
             new list val = list(reversed([int(x) for x in bin(-int(n))[2:]]));
-            new <Register> tmp;
+            new Register tmp;
             tmp = Register(None, len(val), False);
             tmp.data = val;
             tmp.invert();

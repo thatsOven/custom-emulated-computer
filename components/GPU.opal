@@ -73,14 +73,14 @@ new class GPU : Component {
         match this.mode.data {
             # pixel mode
             case [0, 0, 0] {
-                new <Register> tmp = Register(this.computer, BITS, False);
+                new Register tmp = Register(this.computer, BITS, False);
                 tmp.load();
 
                 this.frameBuffer.set_at((this.x.toDec(), this.y.toDec()), this.__getColor(tmp));
             } 
             # text mode
             case [1, 0, 0] {
-                new <Register> tmp = Register(this.computer, BITS, False);
+                new Register tmp = Register(this.computer, BITS, False);
                 tmp.load();
 
                 new int prc0 = CHAR_BITS + CHAR_COLOR_BITS,
@@ -156,7 +156,7 @@ new class GPU : Component {
             # b/w mode
             case [0, 0, 1] {
                 new dynamic resolution = this.frameBuffer.get_size();
-                new <Register> tmp = Register(this.computer, BITS, False);
+                new Register tmp = Register(this.computer, BITS, False);
                 tmp.load();
 
                 new dynamic x = this.x.toDec(),

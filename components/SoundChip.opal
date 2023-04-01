@@ -19,7 +19,7 @@ new class SoundChip : Component {
     }
 
     new method load() {
-        new <Register> tmp = Register(this.computer, BITS, False);
+        new Register tmp = Register(this.computer, BITS, False);
         tmp.load();
 
         $call clock
