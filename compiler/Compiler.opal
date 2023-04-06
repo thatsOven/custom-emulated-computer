@@ -203,7 +203,6 @@ new class Compiler {
 
             if line.startswith(":") {
                 new dynamic name;
-                unchecked:
                 name, _ = this.getUntilNotWord(line, 1);
 
                 this.variables[name] = this.oLine;
@@ -215,7 +214,6 @@ new class Compiler {
                 continue;
             } elif line.startswith(".addr") {
                 new dynamic charPtr, plh;
-                unchecked:
                 plh, charPtr = this.getUntilNotWord(line, 5);
 
                 this.fetching = False;
@@ -224,7 +222,6 @@ new class Compiler {
                 continue;
             } elif line.startswith(".fill") or line.startswith(".stack") {
                 new dynamic charPtr, plh;
-                unchecked:
                 plh, charPtr = this.getUntilNotWord(line, 5);
 
                 this.fetching = False;
@@ -289,7 +286,6 @@ new class Compiler {
                 continue;
             } elif line.startswith(".addr") {
                 new dynamic charPtr, plh;
-                unchecked:
                 plh, charPtr = this.getUntilNotWord(line, 1);
 
                 new int val = this.getValue(line[charPtr:]);
@@ -298,15 +294,14 @@ new class Compiler {
 
                 this.iLine++;
                 continue;
-            } elif (stack := line.startswith(".stack")) or line.startswith(".fill") {
+            } elif line.startswith(".stack") or line.startswith(".fill") {
                 new dynamic charPtr, plh;
-                unchecked:
                 plh, charPtr = this.getUntilNotWord(line, 1);
 
                 new int val = this.getValue(line[charPtr:]);
                 this.result += [this.fill([]) for _ in range(val)];
 
-                if stack {
+                if line.startswith(".stack") {
                     this.stackPos  = this.oLine;
                     this.stackSize = val;
                 }

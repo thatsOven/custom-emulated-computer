@@ -99,8 +99,8 @@ new class Register : BUS {
         this.__checkFlags();
     }
 
-    new method toDec(signed = False) {
-        if signed {
+    new method toDec(signed_ = False) {
+        if signed_ {
             return -this.data[-1] * (2 ** (len(this.data) - 1)) + int("".join([str(bit) for bit in reversed(this.data[:-1])]), 2);
         } else {
             return int("".join([str(bit) for bit in reversed(this.data)]), 2);

@@ -6,6 +6,7 @@ package scipy:  import signal;
 package timeit: import default_timer;
 package pygame: import Surface, transform, draw, mixer;
 import numpy;
+$args ["--static"]
 
 new Vector RESOLUTION = Vector(256, 256);
 
@@ -15,7 +16,7 @@ new int BITS                  = 16,
         FLAGS_QTY             = 3,
         INSTRUCTION_BITS      = 8,
         INTERRUPT_BITS        = 4,
-        GPU_MODE_BITS         = 2,
+        GPU_MODE_BITS         = 3,
         COLOR_BITS            = 5,
         GPU_MODIFIER_BITS     = 1,
         CHAR_BITS             = 7,
@@ -52,7 +53,7 @@ $end
 
 $include os.path.join(HOME_DIR, "compiler", "Compiler.opal")
 $include os.path.join(HOME_DIR, "baseComponents", "baseComponents.opal")
-$includeDirectory os.path.join("HOME_DIR", "components")
+$includeDirectory os.path.join(HOME_DIR, "components")
 
 new function prettyPrintTime(n) {
     if n < 1 {
