@@ -4,18 +4,17 @@ enum FlagIndices {
 
 new class ALU : Component {
     new method __sum(b) {
-        new Register result;
-        result = Register(this.computer, len(this.computer.regA.data), False);
-        new int carry = 0;
+        new Register result = Register(this.computer, len(this.computer.regA.data), False);
+        new int carry = 0, aVal, bVal, dig, stAnd, ndAnd;
 
         for i in range(len(this.computer.regA.data)) {
-            new int aVal = this.computer.regA.data[i],
-                    bVal = b.data[i];
+            aVal = this.computer.regA.data[i];
+            bVal = b.data[i];
 
-            new int dig   = aVal ^ bVal,
-                    stAnd = aVal & bVal;
+            dig   = aVal ^ bVal;
+            stAnd = aVal & bVal;
 
-            new int ndAnd = dig & carry;
+            ndAnd = dig & carry;
             dig ^= carry;
 
             result.data[i] = dig;

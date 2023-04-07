@@ -244,7 +244,6 @@ new class Compiler {
             }
 
             new dynamic instruction, charPtr;
-            unchecked:
             instruction, charPtr = this.getUntilNotWord(line, 0);
             instruction = instruction.lower();
 
@@ -260,6 +259,8 @@ new class Compiler {
 
         this.oLine = 0;
         this.fetching = False;
+
+        new int val;
 
         # compile
         for line in code.split("\n") {
@@ -288,7 +289,7 @@ new class Compiler {
                 new dynamic charPtr, plh;
                 plh, charPtr = this.getUntilNotWord(line, 1);
 
-                new int val = this.getValue(line[charPtr:]);
+                val = this.getValue(line[charPtr:]);
                 this.result += [this.fill([]) for _ in range(val - this.oLine)];
                 this.oLine  = val;
 
@@ -298,7 +299,7 @@ new class Compiler {
                 new dynamic charPtr, plh;
                 plh, charPtr = this.getUntilNotWord(line, 1);
 
-                new int val = this.getValue(line[charPtr:]);
+                val = this.getValue(line[charPtr:]);
                 this.result += [this.fill([]) for _ in range(val)];
 
                 if line.startswith(".stack") {
@@ -311,9 +312,9 @@ new class Compiler {
                 this.iLine++;
                 continue;
             } elif line.startswith(".string") {
-                new str val  = eval(line[7:]);
-                this.result += [this.fill(this.decimalToBitarray(ord(ch))) for ch in val];
-                this.oLine  += len(val);
+                new str strVal = eval(line[7:]);
+                this.result += [this.fill(this.decimalToBitarray(ord(ch))) for ch in strVal];
+                this.oLine  += len(strVal);
 
                 this.iLine++;
                 continue;
@@ -340,7 +341,6 @@ new class Compiler {
             }
 
             new dynamic instruction, charPtr;
-            unchecked:
             instruction, charPtr = this.getUntilNotWord(line, 0);
             instruction = instruction.lower();
 
@@ -362,18 +362,20 @@ new class Compiler {
 
             this.iLine++;
         }
+
+        new int i, size;
         
         if this.hadError {
             IO.out(f"Compilation was not successful. 1 word (HLT instruction) written to RAM ({BITS / 8} bytes)\n");
             return this.INSTRUCTION_HANDLERS["hlt"]("");
         } else {
-            new int size = len(this.result);
+            size = len(this.result);
             IO.out(f"Compilation was successful. Writing {size} words ({size * BITS / 8} bytes) to RAM...\n");
 
             if HEX_DUMP {
                 IO.out("Machine code:\n");
                 
-                new int i = 0;
+                i = 0;
                 for word in this.result {
                     IO.out(
                         hex(i)[2:].zfill(RAM_ADDR_SIZE // 4), ": ", 

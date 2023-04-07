@@ -70,6 +70,8 @@ new class GPU : Component {
     }
 
     new method load() {
+        new int prc0, prc1, prc2, prc3, prc4, maxNCh, maxNBg;
+
         match this.mode.data {
             # pixel mode
             case [0, 0, 0] {
@@ -83,11 +85,11 @@ new class GPU : Component {
                 new Register tmp = Register(this.computer, BITS, False);
                 tmp.load();
 
-                new int prc0 = CHAR_BITS + CHAR_COLOR_BITS,
-                        prc1 = prc0 + CHAR_COLOR_BITS,
-                        prc2 = prc1 + CHAR_COLOR_BITS,
-                        prc3 = prc2 + CHAR_BG_COLOR_BITS,
-                        prc4 = prc3 + CHAR_BG_COLOR_BITS;
+                prc0 = CHAR_BITS + CHAR_COLOR_BITS;
+                prc1 = prc0 + CHAR_COLOR_BITS;
+                prc2 = prc1 + CHAR_COLOR_BITS;
+                prc3 = prc2 + CHAR_BG_COLOR_BITS;
+                prc4 = prc3 + CHAR_BG_COLOR_BITS;
 
                 new dynamic ch      = tmp.data[:CHAR_BITS],
                             blue    = tmp.data[CHAR_BITS:prc0],
@@ -97,8 +99,8 @@ new class GPU : Component {
                             bggreen = tmp.data[prc3:prc4],
                             bgred   = tmp.data[prc4:prc4 + CHAR_BG_COLOR_BITS];
 
-                new int maxNCh = 2 ** CHAR_COLOR_BITS - 1,
-                        maxNBg = 2 ** CHAR_BG_COLOR_BITS - 1;
+                maxNCh = 2 ** CHAR_COLOR_BITS - 1;
+                maxNBg = 2 ** CHAR_BG_COLOR_BITS - 1;
 
                 tmp.data = blue;
                 blue = int(Utils.translate(tmp.toDec(), 0, maxNCh, 0, 255));
@@ -142,14 +144,14 @@ new class GPU : Component {
             # rect mode
             case [0, 1, 0] {
                 new dynamic w, h, c;
-                unchecked: w, h, c = this.__get3Data();
+                w, h, c = this.__get3Data();
 
                 draw.rect(this.frameBuffer, c, (this.x.toDec(), this.y.toDec(), w, h));
             }
             # line mode
             case [1, 1, 0] {
                 new dynamic dstX, dstY, c;
-                unchecked: dstX, dstY, c = this.__get3Data();
+                dstX, dstY, c = this.__get3Data();
 
                 draw.line(this.frameBuffer, c, (this.x.toDec(), this.y.toDec()), (dstX, dstY));
             }

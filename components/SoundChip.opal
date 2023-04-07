@@ -109,8 +109,8 @@ new class SoundChip : Component {
             squareDuty  = Register(None,   SQUARE_DUTY_BITS, False);
             noiseAmp    = Register(None,     NOISE_AMP_BITS, False);
 
-            new int p0 = ND_SQUARE_AMP_BITS + SQUARE_DUTY_BITS,
-                    p1 = p0 + NOISE_AMP_BITS;
+            p0 = ND_SQUARE_AMP_BITS + SQUARE_DUTY_BITS;
+            p1 = p0 + NOISE_AMP_BITS;
                 
             ndSquareAmp.data = this.mixerNd.data[:ND_SQUARE_AMP_BITS];
             squareDuty.data  = this.mixerNd.data[ND_SQUARE_AMP_BITS:p0];
@@ -124,9 +124,9 @@ new class SoundChip : Component {
     }
 
     new method play() {
-        new dynamic amp, freq, tmp, sample;
-        amp = Utils.translate(this.amplitude.toDec(), 0, SoundChip.MAX_AMP, 0, MAX_VOL_MULT);
-        freq = this.frequency.toDec();
+        new dynamic tmp, sample;
+        new float amp = Utils.translate(this.amplitude.toDec(), 0, SoundChip.MAX_AMP, 0, MAX_VOL_MULT);
+        new int freq = this.frequency.toDec();
 
         if amp == 0 {
             return;
