@@ -68,10 +68,7 @@ new class Compiler {
         } elif noSpaceSec.startswith("'") {
             new dynamic content, charPtr;
 
-            unchecked:
             content, charPtr = this.getUntil(section, "'", 0);
-
-            unchecked:
             content, charPtr = this.getUntil(section, "'", charPtr);
 
             content = eval('"' + content + '"');
@@ -261,6 +258,7 @@ new class Compiler {
         this.fetching = False;
 
         new int val;
+        new str strVal, passing;
 
         # compile
         for line in code.split("\n") {
@@ -312,7 +310,7 @@ new class Compiler {
                 this.iLine++;
                 continue;
             } elif line.startswith(".string") {
-                new str strVal = eval(line[7:]);
+                strVal = eval(line[7:]);
                 this.result += [this.fill(this.decimalToBitarray(ord(ch))) for ch in strVal];
                 this.oLine  += len(strVal);
 
@@ -345,7 +343,6 @@ new class Compiler {
             instruction = instruction.lower();
 
             if instruction in this.INSTRUCTION_HANDLERS {
-                new str passing;
                 if charPtr == len(line) {
                     passing = "";
                 } else {

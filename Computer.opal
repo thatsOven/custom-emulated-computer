@@ -55,7 +55,7 @@ $include os.path.join(HOME_DIR, "compiler", "Compiler.opal")
 $include os.path.join(HOME_DIR, "baseComponents", "baseComponents.opal")
 $includeDirectory os.path.join(HOME_DIR, "components")
 
-new function prettyPrintTime(n) {
+new function prettyPrintTime(n: float) str {
     if n < 1 {
         n *= 1000;
 
@@ -252,7 +252,7 @@ new class Computer {
     }
 }
 
-new function prettyPrintFreq(n) {
+new function prettyPrintFreq(n: float) str {
     if n >= 1000 {
         n /= 1000;
 

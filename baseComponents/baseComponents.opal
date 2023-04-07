@@ -15,6 +15,8 @@ new class BUS {
     }
 
     new method load(data) {
+        new int i;
+
         if len(data) < len(this.data) {
             for i = 0; i < len(data); i++ {
                 this.data[i] = data[i];
@@ -100,6 +102,8 @@ new class MemoryAddressRegister : Register {
     }
 
     new method load() {
+        new int i;
+        
         if len(this.computer.bus.data) < this.writable {
             for i = 0; i < len(this.computer.bus.data); i++ {
                 this.data[i] = this.computer.bus.data[i];
@@ -135,6 +139,8 @@ new class InstructionRegister : Component {
     }
 
     new method load() {
+        new int i, j;
+        
         for i = 0; i < len(this.low.data); i++ {
             this.low.data[i] = this.computer.bus.data[i];
         }

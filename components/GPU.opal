@@ -70,7 +70,8 @@ new class GPU : Component {
     }
 
     new method load() {
-        new int prc0, prc1, prc2, prc3, prc4, maxNCh, maxNBg;
+        new int prc0, prc1, prc2, prc3, prc4, 
+                maxNCh, maxNBg, x, y, i, startX, startY;
 
         match this.mode.data {
             # pixel mode
@@ -129,8 +130,8 @@ new class GPU : Component {
                     ch = this.__charROM[0x20];
                 }
 
-                new dynamic startY = this.y.toDec() * 7,
-                            startX = this.x.toDec() * 8;
+                startY = this.y.toDec() * 7;
+                startX = this.x.toDec() * 8;
                 for y = startY, chY = 0; y < startY + 7; y++, chY++ {
                     for x = startX, chX = 0; x < startX + 8; x++, chX++ {
                         if ch[chY][chX] == 1 {
@@ -161,8 +162,8 @@ new class GPU : Component {
                 new Register tmp = Register(this.computer, BITS, False);
                 tmp.load();
 
-                new dynamic x = this.x.toDec(),
-                            y = this.y.toDec();
+                x = this.x.toDec();
+                y = this.y.toDec();
 
                 for i = 0; i < BITS; i++, x++ {
                     this.frameBuffer.set_at((x, y), (255, 255, 255) if tmp.bits[i] else (0, 0, 0));
