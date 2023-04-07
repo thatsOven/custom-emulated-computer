@@ -6,7 +6,7 @@ package scipy:  import signal;
 package timeit: import default_timer;
 package pygame: import Surface, transform, draw, mixer;
 import numpy;
-$args ["--static"]
+$args ["--static", "--disable-notes"]
 
 new Vector RESOLUTION = Vector(256, 256);
 

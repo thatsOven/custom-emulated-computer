@@ -71,7 +71,8 @@ new class GPU : Component {
 
     new method load() {
         new int prc0, prc1, prc2, prc3, prc4, 
-                maxNCh, maxNBg, x, y, i, startX, startY;
+                maxNCh, maxNBg, x, y, i, startX, 
+                startY, chX, chY;
 
         match this.mode.data {
             # pixel mode
