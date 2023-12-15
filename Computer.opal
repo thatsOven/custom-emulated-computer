@@ -1,6 +1,6 @@
 package opal:   import *;
 package time:   import sleep;
-package sys:    import argv;
+package sys:    import argv, exit;
 package math:   import ceil;
 package scipy:  import signal;
 package timeit: import default_timer;
@@ -142,7 +142,7 @@ new class Computer {
             IO.out("Execution time: ", prettyPrintTime(this.time), IO.endl);
         }
 
-        quit;
+        exit(0);
     }
 
     new method __memSwap(fromReg, toAddr) {
